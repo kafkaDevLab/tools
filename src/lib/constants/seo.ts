@@ -101,10 +101,10 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     keywords: ['비밀번호 생성기', '랜덤 비밀번호', '강력한 비밀번호', '비밀번호 만들기'],
   },
   '/color-converter': {
-    title: '색상 변환기',
+    title: '색 조합',
     description:
-      'HEX, RGB, HSL 색상 코드를 실시간으로 변환하고 색상 피커로 선택할 수 있습니다.',
-    keywords: ['색상 변환기', 'HEX RGB HSL', '색상 코드 변환', '컬러 피커'],
+      '색 조합 프리셋을 선택하고 HEX, RGB, HSL로 실시간 변환·편집할 수 있습니다.',
+    keywords: ['색 조합', 'HEX RGB HSL', '색상 코드 변환', '컬러 피커', '팔레트'],
   },
   '/base64': {
     title: 'Base64 인코더·디코더',

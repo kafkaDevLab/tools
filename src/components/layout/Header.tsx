@@ -42,7 +42,7 @@ export default function Header() {
       name: '유틸',
       submenu: [
         { name: '비밀번호 생성', path: '/password-generator' },
-        { name: '색상 변환', path: '/color-converter' },
+        { name: '색 조합', path: '/color-converter' },
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
         { name: '정규식 테스터', path: '/regex-tester' },
