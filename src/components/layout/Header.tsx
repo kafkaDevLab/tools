@@ -34,10 +34,20 @@ export default function Header() {
       name: '이미지',
       submenu: [
         { name: '확장자 변환', path: '/image-convert' },
-        { name: '크기 조절', path: '/image-resize' }
-      ]
+        { name: '크기 조절', path: '/image-resize' },
+      ],
     },
     { name: 'JSON 포맷터', path: '/json-formatter' },
+    {
+      name: '유틸',
+      submenu: [
+        { name: '비밀번호 생성', path: '/password-generator' },
+        { name: '색상 변환', path: '/color-converter' },
+        { name: 'Base64', path: '/base64' },
+        { name: 'QR 코드', path: '/qr-generator' },
+        { name: '정규식 테스터', path: '/regex-tester' },
+      ],
+    },
   ];
 
   const isActiveLink = (link: NavLink) => {

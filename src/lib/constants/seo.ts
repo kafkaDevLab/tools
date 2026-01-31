@@ -94,6 +94,36 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     description: 'JSON 데이터를 검증하고 보기 좋게 정렬합니다. 문법 오류 위치 표시, 복사 기능 지원.',
     keywords: ['JSON 포맷터', 'JSON 검증', 'JSON 정렬', 'JSON 포맷'],
   },
+  '/password-generator': {
+    title: '비밀번호 생성기',
+    description:
+      '길이·대문자·소문자·숫자·특수문자 옵션으로 안전한 랜덤 비밀번호를 생성합니다. 클립보드 복사 지원.',
+    keywords: ['비밀번호 생성기', '랜덤 비밀번호', '강력한 비밀번호', '비밀번호 만들기'],
+  },
+  '/color-converter': {
+    title: '색상 변환기',
+    description:
+      'HEX, RGB, HSL 색상 코드를 실시간으로 변환하고 색상 피커로 선택할 수 있습니다.',
+    keywords: ['색상 변환기', 'HEX RGB HSL', '색상 코드 변환', '컬러 피커'],
+  },
+  '/base64': {
+    title: 'Base64 인코더·디코더',
+    description:
+      '텍스트와 파일을 Base64로 인코딩·디코딩합니다. 텍스트 모드와 파일 모드 지원.',
+    keywords: ['Base64 인코더', 'Base64 디코더', 'Base64 인코딩', 'Base64 디코딩'],
+  },
+  '/qr-generator': {
+    title: 'QR 코드 생성기',
+    description:
+      '텍스트나 URL을 입력하면 QR 코드 이미지를 생성하고 PNG로 다운로드할 수 있습니다.',
+    keywords: ['QR 코드 생성', 'QR 코드 만들기', 'QR 코드 생성기', 'URL QR 코드'],
+  },
+  '/regex-tester': {
+    title: '정규식 테스터',
+    description:
+      '정규식 패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.',
+    keywords: ['정규식 테스터', '정규식 테스트', 'regex 테스터', '정규표현식'],
+  },
 };
 
 /** sitemap 등에서 사용할 실제 공개 경로 목록 */
