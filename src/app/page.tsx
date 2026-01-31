@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson } from 'lucide-react';
+import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Home() {
@@ -35,11 +35,19 @@ export default function Home() {
     },
     {
       id: 'image-convert',
-      title: '이미지 변환기',
-      description: 'JPG, PNG 등 다양한 이미지를 WebP 포맷으로 변환합니다.',
+      title: '이미지 확장자 변환',
+      description: 'JPG, PNG, WebP, GIF 간 자유롭게 변환하고 품질을 조절하세요.',
       icon: <ImageIcon className="w-8 h-8 text-orange-500" />,
       color: 'bg-orange-50 hover:border-orange-200',
       link: '/image-convert'
+    },
+    {
+      id: 'image-resize',
+      title: '이미지 크기 조절',
+      description: '픽셀, 퍼센트, 프리셋 크기로 이미지를 리사이징하세요.',
+      icon: <Maximize2 className="w-8 h-8 text-blue-400" />,
+      color: 'bg-blue-50 hover:border-blue-200',
+      link: '/image-resize'
     },
     {
       id: 'json-formatter',

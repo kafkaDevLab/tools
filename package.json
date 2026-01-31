@@ -24,6 +24,7 @@
     "@tiptap/extension-placeholder": "^3.17.0",
     "@tiptap/react": "^3.17.0",
     "@tiptap/starter-kit": "^3.17.0",
+    "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.25.0",
     "jszip": "^3.10.1",
@@ -36,6 +37,7 @@
     "react-is": "^19.2.3",
     "react-json-view": "^1.21.3",
     "recharts": "^3.7.0",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0"
   },
