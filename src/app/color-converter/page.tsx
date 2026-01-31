@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Palette, Copy, Check } from 'lucide-react';
+import { Palette, Copy, Check, Trash2, Info, GripVertical } from 'lucide-react';
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const m = hex.replace(/^#/, '').match(/^([0-9a-f]{3}|[0-9a-f]{6})$/i);
@@ -77,6 +77,31 @@ function hueToRgb(p: number, q: number, t: number): number {
   return p;
 }
 
+function getLuminance(hex: string): number {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return 0;
+  const [r, g, b] = [rgb.r, rgb.g, rgb.b].map((v) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function getContrastRatio(hex1: string, hex2: string): number {
+  const L1 = getLuminance(hex1);
+  const L2 = getLuminance(hex2);
+  const lighter = Math.max(L1, L2);
+  const darker = Math.min(L1, L2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/** WCAG AA: normal text 4.5:1, large text 3:1. Use 4.5:1 as pass. */
+const WCAG_AA_CONTRAST = 4.5;
+
+function isContrastAccessible(ratio: number): boolean {
+  return ratio >= WCAG_AA_CONTRAST;
+}
+
 const DEFAULT_PALETTE = ['#3b82f6', '#ef4444', '#22c55e', '#eab308', '#8b5cf6'];
 
 const COLOR_PRESETS: { name: string; colors: string[] }[] = [
@@ -94,77 +119,45 @@ const COLOR_PRESETS: { name: string; colors: string[] }[] = [
 
 export default function ColorConverterPage() {
   const [colors, setColors] = useState<string[]>(() => [...DEFAULT_PALETTE]);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [hex, setHex] = useState(DEFAULT_PALETTE[0] ?? '#3b82f6');
-  const [rgb, setRgb] = useState({ r: 59, g: 130, b: 246 });
-  const [hsl, setHsl] = useState({ h: 217, s: 91, l: 60 });
-  const [source, setSource] = useState<'hex' | 'rgb' | 'hsl'>('hex');
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
+  const [colorInfoHex, setColorInfoHex] = useState<string | null>(null);
   const [copiedPresetIndex, setCopiedPresetIndex] = useState<number | null>(null);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  // 슬롯 선택 시 해당 슬롯 색상을 편집 상태로 로드
   useEffect(() => {
-    const slotHex = colors[selectedIndex];
-    if (slotHex) {
-      setHex(slotHex);
-      const parsed = hexToRgb(slotHex);
-      if (parsed) {
-        setRgb(parsed);
-        setHsl(rgbToHsl(parsed.r, parsed.g, parsed.b));
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenuIndex(null);
       }
-    }
-  }, [selectedIndex]);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  // 편집 중인 색상을 현재 슬롯에 반영
-  useEffect(() => {
-    const parsed = hexToRgb(hex);
-    if (parsed) {
-      setColors((prev) => {
-        const next = [...prev];
-        next[selectedIndex] = hex.match(/^#[0-9a-f]{6}$/i) ? hex : next[selectedIndex] ?? hex;
-        return next;
-      });
-    }
-  }, [hex, selectedIndex]);
+  const showMenu = (i: number) => hoveredIndex === i || openMenuIndex === i;
 
-  useEffect(() => {
-    if (source === 'hex') {
-      const parsed = hexToRgb(hex);
-      if (parsed) {
-        setRgb(parsed);
-        setHsl(rgbToHsl(parsed.r, parsed.g, parsed.b));
-      }
-    }
-  }, [hex, source]);
+  const removeColor = (index: number) => {
+    setColors((prev) => prev.filter((_, i) => i !== index));
+    setOpenMenuIndex(null);
+  };
 
-  useEffect(() => {
-    if (source === 'rgb') {
-      setHex(rgbToHex(rgb.r, rgb.g, rgb.b));
-      setHsl(rgbToHsl(rgb.r, rgb.g, rgb.b));
-    }
-  }, [rgb.r, rgb.g, rgb.b, source]);
-
-  useEffect(() => {
-    if (source === 'hsl') {
-      const { r, g, b } = hslToRgb(hsl.h, hsl.s, hsl.l);
-      setRgb({ r, g, b });
-      setHex(rgbToHex(r, g, b));
-    }
-  }, [hsl.h, hsl.s, hsl.l, source]);
-
-  const previewBg = hex.match(/^#[0-9a-f]{6}$/i) ? hex : '#3b82f6';
+  const reorderByDrag = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
+    setColors((prev) => {
+      const arr = [...prev];
+      const [removed] = arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, removed!);
+      return arr;
+    });
+    setOpenMenuIndex(toIndex);
+  };
 
   const applyPreset = (preset: { name: string; colors: string[] }) => {
     setColors([...preset.colors]);
-    setSelectedIndex(0);
-    const first = preset.colors[0];
-    if (first) {
-      setHex(first);
-      const parsed = hexToRgb(first);
-      if (parsed) {
-        setRgb(parsed);
-        setHsl(rgbToHsl(parsed.r, parsed.g, parsed.b));
-      }
-    }
+    setOpenMenuIndex(null);
   };
 
   const copyPresetHex = async (preset: { colors: string[] }, index: number) => {
@@ -190,7 +183,7 @@ export default function ColorConverterPage() {
               </div>
             </div>
             <h1 className="text-3xl font-bold mb-2 text-slate-900">색 조합</h1>
-            <p className="text-slate-500">프리셋을 선택하거나 5색을 편집하고 HEX, RGB, HSL로 변환할 수 있습니다.</p>
+            <p className="text-slate-500">프리셋을 선택하거나 색상에 마우스를 올려 메뉴에서 제거·이동·대비·상세 정보를 확인할 수 있습니다.</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-6">
@@ -240,129 +233,216 @@ export default function ColorConverterPage() {
               </div>
             </aside>
 
-            {/* 오른쪽: 5색 슬롯 + 미리보기 + HEX/RGB/HSL */}
-            <div className="flex-1 min-w-0">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
-            {/* 5가지 색상 슬롯: 가로 나열, 선택 시 해당 색 편집 */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">색 조합 (클릭하여 선택·편집)</label>
-              <div className="flex gap-0 overflow-hidden rounded-xl border-2 border-slate-200">
-                {colors.map((slotHex, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setSelectedIndex(i)}
-                    className={`flex-1 min-w-0 h-20 shrink-0 transition-all ${
-                      selectedIndex === i ? 'ring-2 ring-slate-900 ring-inset' : 'hover:opacity-90'
-                    }`}
-                    style={{ backgroundColor: slotHex.match(/^#[0-9a-f]{6}$/i) ? slotHex : '#e2e8f0' }}
-                    title={`색 ${i + 1} 선택`}
-                  />
-                ))}
+            {/* 오른쪽: 색상 슬롯 (호버/클릭 시 메뉴) */}
+            <div className="flex-1 min-w-0" ref={menuRef}>
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                <div className="flex gap-0 overflow-hidden rounded-xl border-2 border-slate-200">
+                  {colors.map((slotHex, i) => {
+                    const hex = slotHex.match(/^#[0-9a-f]{6}$/i) ? slotHex : '#e2e8f0';
+                    const isLight = getLuminance(hex) > 0.5;
+                    const textClass = isLight ? 'text-slate-900' : 'text-white';
+                    const menuVisible = showMenu(i);
+                    return (
+                      <div
+                        key={i}
+                        className={`relative flex-1 min-w-0 flex flex-col shrink-0 min-h-[280px] transition-shadow ${
+                          menuVisible ? 'z-[100]' : ''
+                        } ${
+                          dragOverIndex === i ? 'ring-2 ring-white ring-inset shadow-inner' : ''
+                        } ${dragIndex === i ? 'opacity-60' : ''}`}
+                        style={{ backgroundColor: hex }}
+                        onMouseEnter={() => setHoveredIndex(i)}
+                        onMouseLeave={() => {
+                          setHoveredIndex(null);
+                          if (openMenuIndex === i) setOpenMenuIndex(null);
+                        }}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          e.dataTransfer.dropEffect = 'move';
+                          setDragOverIndex(i);
+                        }}
+                        onDragLeave={() => setDragOverIndex((prev) => (prev === i ? null : prev))}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          if (dragIndex !== null) {
+                            reorderByDrag(dragIndex, i);
+                          }
+                          setDragIndex(null);
+                          setDragOverIndex(null);
+                        }}
+                      >
+                        {/* 평상시: hex만 하단에 표시 */}
+                        {!menuVisible && (
+                          <span
+                            className={`absolute bottom-2 left-0 right-0 text-center font-mono text-xs font-medium ${textClass} drop-shadow-sm`}
+                          >
+                            {hex}
+                          </span>
+                        )}
+                        {/* 호버/클릭 시: 색상 안에 메뉴 오버레이 (z-30으로 드래그 핸들 위에 항상 표시) */}
+                        {menuVisible && (
+                          <div
+                            className="absolute inset-0 z-20 flex flex-col justify-center p-2 bg-black/40 backdrop-blur-sm"
+                            onClick={() => setOpenMenuIndex(null)}
+                          >
+                            <div
+                              className="space-y-0.5 text-center"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <button
+                                type="button"
+                                onClick={() => removeColor(i)}
+                                className="w-full py-1.5 text-sm text-white hover:bg-white/20 rounded flex items-center justify-center gap-1.5"
+                              >
+                                <Trash2 size={14} /> Remove
+                              </button>
+                              <div
+                                draggable
+                                onDragStart={(e) => {
+                                  e.dataTransfer.setData('text/plain', String(i));
+                                  e.dataTransfer.effectAllowed = 'move';
+                                  setDragIndex(i);
+                                  setOpenMenuIndex(null);
+                                }}
+                                onDragEnd={() => {
+                                  setDragIndex(null);
+                                  setDragOverIndex(null);
+                                }}
+                                className="w-full py-1.5 text-sm text-white hover:bg-white/20 rounded flex items-center justify-center gap-1.5 cursor-grab active:cursor-grabbing touch-none"
+                              >
+                                <GripVertical size={14} /> Move
+                              </div>
+                              <div className="py-1 text-xs text-white/90">
+                                {(() => {
+                                  const w = getContrastRatio(hex, '#ffffff');
+                                  const b = getContrastRatio(hex, '#000000');
+                                  const wOk = isContrastAccessible(w);
+                                  const bOk = isContrastAccessible(b);
+                                  return (
+                                    <>
+                                      White text: {w.toFixed(1)}:1{' '}
+                                      <span className={wOk ? 'text-emerald-300' : 'text-red-300'}>
+                                        {wOk ? 'Good' : 'Bad'}
+                                      </span>
+                                      <br />
+                                      Black text: {b.toFixed(1)}:1{' '}
+                                      <span className={bOk ? 'text-emerald-300' : 'text-red-300'}>
+                                        {bOk ? 'Good' : 'Bad'}
+                                      </span>
+                                    </>
+                                  );
+                                })()}
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setColorInfoHex(hex);
+                                  setOpenMenuIndex(null);
+                                }}
+                                className="w-full py-1.5 text-sm text-white hover:bg-white/20 rounded flex items-center justify-center gap-1.5"
+                              >
+                                <Info size={14} /> View color info
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="absolute inset-0 z-0"
+                          onClick={() => setOpenMenuIndex((prev) => (prev === i ? null : i))}
+                          aria-haspopup="true"
+                          aria-expanded={menuVisible}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-
-            <div
-              className="w-full h-24 rounded-xl border-2 border-slate-200"
-              style={{ backgroundColor: previewBg }}
-            />
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">HEX</label>
-              <div className="flex gap-2 items-center">
-                <input
-                  type="color"
-                  value={hex}
-                  onChange={(e) => {
-                    setSource('hex');
-                    setHex(e.target.value);
-                  }}
-                  className="w-10 h-10 rounded-lg cursor-pointer border border-slate-200"
-                />
-                <input
-                  type="text"
-                  value={hex}
-                  onChange={(e) => {
-                    setSource('hex');
-                    setHex(e.target.value);
-                  }}
-                  className="flex-1 px-4 py-2 rounded-xl border border-slate-200 font-mono text-sm"
-                  placeholder="#000000"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">RGB</label>
-              <div className="flex gap-2">
-                {(['r', 'g', 'b'] as const).map((key) => (
-                  <input
-                    key={key}
-                    type="number"
-                    min={0}
-                    max={255}
-                    value={rgb[key]}
-                    onChange={(e) => {
-                      setSource('rgb');
-                      setRgb((prev) => ({ ...prev, [key]: Number(e.target.value) || 0 }));
-                    }}
-                    className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-center font-mono text-sm"
-                  />
-                ))}
-              </div>
-              <p className="text-xs text-slate-500 mt-1">rgb({rgb.r}, {rgb.g}, {rgb.b})</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">HSL</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  min={0}
-                  max={360}
-                  value={Math.round(hsl.h)}
-                  onChange={(e) => {
-                    setSource('hsl');
-                    setHsl((prev) => ({ ...prev, h: Number(e.target.value) || 0 }));
-                  }}
-                  className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-center font-mono text-sm"
-                  placeholder="H"
-                />
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={Math.round(hsl.s)}
-                  onChange={(e) => {
-                    setSource('hsl');
-                    setHsl((prev) => ({ ...prev, s: Number(e.target.value) || 0 }));
-                  }}
-                  className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-center font-mono text-sm"
-                  placeholder="S"
-                />
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={Math.round(hsl.l)}
-                  onChange={(e) => {
-                    setSource('hsl');
-                    setHsl((prev) => ({ ...prev, l: Number(e.target.value) || 0 }));
-                  }}
-                  className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-center font-mono text-sm"
-                  placeholder="L"
-                />
-              </div>
-              <p className="text-xs text-slate-500 mt-1">
-                hsl({Math.round(hsl.h)}, {Math.round(hsl.s)}%, {Math.round(hsl.l)}%)
-              </p>
-            </div>
-          </div>
             </div>
           </div>
         </div>
       </main>
       <Footer />
+
+      {/* Color info layer popup */}
+      {colorInfoHex && (() => {
+        const rgb = hexToRgb(colorInfoHex);
+        const hsl = rgb ? rgbToHsl(rgb.r, rgb.g, rgb.b) : null;
+        const lum = getLuminance(colorInfoHex);
+        const contrastWhite = getContrastRatio(colorInfoHex, '#ffffff');
+        const contrastBlack = getContrastRatio(colorInfoHex, '#000000');
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            onClick={() => setColorInfoHex(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Color info"
+          >
+            <div
+              className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 max-w-sm w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                className="w-full h-24 rounded-xl mb-4 border border-slate-200"
+                style={{ backgroundColor: colorInfoHex }}
+              />
+              <h3 className="text-lg font-semibold text-slate-900 mb-3">Color info</h3>
+              <dl className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <dt className="text-slate-500">HEX</dt>
+                  <dd className="font-mono text-slate-900">{colorInfoHex}</dd>
+                </div>
+                {rgb && (
+                  <div className="flex justify-between">
+                    <dt className="text-slate-500">RGB</dt>
+                    <dd className="font-mono text-slate-900">
+                      {rgb.r}, {rgb.g}, {rgb.b}
+                    </dd>
+                  </div>
+                )}
+                {hsl && (
+                  <div className="flex justify-between">
+                    <dt className="text-slate-500">HSL</dt>
+                    <dd className="font-mono text-slate-900">
+                      {Math.round(hsl.h)}, {Math.round(hsl.s)}%, {Math.round(hsl.l)}%
+                    </dd>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <dt className="text-slate-500">Luminance</dt>
+                  <dd className="font-mono text-slate-900">{lum.toFixed(4)}</dd>
+                </div>
+                <div className="flex justify-between items-center">
+                  <dt className="text-slate-500">Contrast (white)</dt>
+                  <dd className="font-mono text-slate-900">
+                    {contrastWhite.toFixed(2)}:1{' '}
+                    <span className={isContrastAccessible(contrastWhite) ? 'text-emerald-600' : 'text-red-600'}>
+                      {isContrastAccessible(contrastWhite) ? 'Good' : 'Bad'}
+                    </span>
+                  </dd>
+                </div>
+                <div className="flex justify-between items-center">
+                  <dt className="text-slate-500">Contrast (black)</dt>
+                  <dd className="font-mono text-slate-900">
+                    {contrastBlack.toFixed(2)}:1{' '}
+                    <span className={isContrastAccessible(contrastBlack) ? 'text-emerald-600' : 'text-red-600'}>
+                      {isContrastAccessible(contrastBlack) ? 'Good' : 'Bad'}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+              <button
+                type="button"
+                onClick={() => setColorInfoHex(null)}
+                className="mt-4 w-full py-2.5 rounded-xl bg-slate-100 text-slate-700 font-medium hover:bg-slate-200 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
