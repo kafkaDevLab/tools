@@ -1,0 +1,9 @@
+# 아파트 포트폴리오 이미지 저장 경로
+# 
+# 사용 예시:
+# - /portfolio/apartment/hero.jpg
+# - /portfolio/apartment/floor-plans/plan1.jpg
+# - /portfolio/apartment/facilities/facility1.jpg
+# 
+# 이미지 파일을 이 폴더에 저장하고 다음과 같이 사용하세요:
+# <img src="/portfolio/apartment/hero.jpg" alt="..." />

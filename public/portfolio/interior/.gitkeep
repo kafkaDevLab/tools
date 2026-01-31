@@ -1,0 +1,9 @@
+# 인테리어 포트폴리오 이미지 저장 경로
+# 
+# 사용 예시:
+# - /portfolio/interior/hero1.jpg
+# - /portfolio/interior/portfolio/item1.jpg
+# - /portfolio/interior/reviews/review1.jpg
+# 
+# 이미지 파일을 이 폴더에 저장하고 다음과 같이 사용하세요:
+# <img src="/portfolio/interior/hero1.jpg" alt="..." />
