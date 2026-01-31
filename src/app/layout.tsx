@@ -5,14 +5,14 @@ import {
   SITE_NAME,
   SITE_URL,
   SITE_OG_IMAGE,
-  SITE_KEYWORDS,
-  SITE_TITLE,
-  SITE_DESCRIPTION,
   SITE_AUTHOR,
   SITE_CREATOR,
   SITE_PUBLISHER,
   SITE_FORMAT_DETECTION,
 } from '@/lib/constants/site';
+import { PAGE_SEO } from '@/lib/constants/seo';
+
+const homeSeo = PAGE_SEO['/'];
 
 const notoSansKR = Noto_Sans_KR({
   weight: ['300', '400', '700', '900'],
@@ -23,11 +23,11 @@ const notoSansKR = Noto_Sans_KR({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: SITE_TITLE,
+    default: homeSeo.title,
     template: `%s | ${SITE_NAME}`,
   },
-  description: SITE_DESCRIPTION,
-  keywords: SITE_KEYWORDS,
+  description: homeSeo.description,
+  keywords: homeSeo.keywords,
   authors: [{ name: SITE_AUTHOR }],
   creator: SITE_CREATOR,
   publisher: SITE_PUBLISHER,
@@ -37,8 +37,8 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    title: homeSeo.title,
+    description: homeSeo.description,
     images: [
       {
         url: SITE_OG_IMAGE,
@@ -50,8 +50,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
+    title: homeSeo.title,
+    description: homeSeo.description,
     images: [SITE_OG_IMAGE],
   },
   robots: {

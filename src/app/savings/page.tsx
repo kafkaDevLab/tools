@@ -21,7 +21,7 @@ interface PinwheelData {
 export default function SavingsPage() {
     const [mode, setMode] = useState<'standard' | 'pinwheel'>('standard');
     const [initialAmount, setInitialAmount] = useState<number>(3000);
-    const [interestRate, setInterestRate] = useState<number>(3.0);
+    const [interestRate, setInterestRate] = useState<number>(5.0);
     const [isTaxFree, setIsTaxFree] = useState<boolean>(false);
 
     const [weeks, setWeeks] = useState<WeekData[]>([]);
