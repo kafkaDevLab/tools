@@ -75,7 +75,7 @@ export default function DividendPage() {
                                                 type="number"
                                                 value={sharePrice}
                                                 onChange={(e) => setSharePrice(e.target.value)}
-                                                className="w-full pl-8 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                                className="w-full pl-8 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all hide-spinner"
                                             />
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@ export default function DividendPage() {
                                             type="number"
                                             value={sharesOwned}
                                             onChange={(e) => setSharesOwned(e.target.value)}
-                                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all hide-spinner"
                                         />
                                     </div>
                                 </div>
@@ -115,7 +115,7 @@ export default function DividendPage() {
                                                 type="number"
                                                 value={dividendYield}
                                                 onChange={(e) => setDividendYield(e.target.value)}
-                                                className="w-full pl-4 pr-8 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                                className="w-full pl-4 pr-8 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all hide-spinner"
                                                 step="0.01"
                                             />
                                             <span className="absolute right-3 top-2.5 text-slate-400">%</span>
@@ -127,7 +127,7 @@ export default function DividendPage() {
                                                 type="number"
                                                 value={dividendAmount}
                                                 onChange={(e) => setDividendAmount(e.target.value)}
-                                                className="w-full pl-8 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
+                                                className="w-full pl-8 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all hide-spinner"
                                             />
                                         </div>
                                     )}

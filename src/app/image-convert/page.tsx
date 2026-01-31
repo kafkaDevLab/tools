@@ -91,6 +91,10 @@ export default function ImageConvertPage() {
     };
 
     const removeImage = (index: number) => {
+        const imageToRemove = convertedImages[index];
+        if (imageToRemove) {
+            URL.revokeObjectURL(imageToRemove.previewUrl);
+        }
         setConvertedImages(prev => prev.filter((_, i) => i !== index));
     };
 
@@ -108,30 +112,56 @@ export default function ImageConvertPage() {
     const downloadAll = async () => {
         if (convertedImages.length === 0) return;
 
-        setIsConverting(true); // Reuse loading state for zip generation
+        setIsConverting(true);
 
         try {
             const zip = new JSZip();
+            const usedNames = new Set<string>();
 
             // Add files to zip
-            convertedImages.forEach(img => {
-                const namePart = img.originalName.substring(0, img.originalName.lastIndexOf('.')) || img.originalName;
-                zip.file(`${namePart}.webp`, img.blob);
+            convertedImages.forEach((img, index) => {
+                let namePart = img.originalName;
+                const lastDotIndex = img.originalName.lastIndexOf('.');
+                if (lastDotIndex !== -1) {
+                    namePart = img.originalName.substring(0, lastDotIndex);
+                }
+
+                let fileName = `${namePart}.webp`;
+
+                // Handle duplicate names
+                let counter = 1;
+                while (usedNames.has(fileName)) {
+                    fileName = `${namePart}_(${counter}).webp`;
+                    counter++;
+                }
+                usedNames.add(fileName);
+
+                zip.file(fileName, img.blob);
             });
 
             // Generate zip
-            const content = await zip.generateAsync({ type: "blob" });
-            const url = URL.createObjectURL(content);
+            const content = await zip.generateAsync({
+                type: "blob",
+                compression: "DEFLATE",
+                compressionOptions: { level: 9 }
+            });
 
+            const url = URL.createObjectURL(content);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `converted_images_${new Date().getTime()}.zip`;
+            link.download = `DailyTools_Export_${new Date().toISOString().split('T')[0]}.zip`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(url);
+
+            // Small delay before revoking to ensure download starts in all browsers
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 1000);
+
         } catch (error) {
-            console.error('Error generating zip:', error);
+            console.error('ZIP generation failed:', error);
+            alert('ZIP 파일 생성 중 오류가 발생했습니다.');
         } finally {
             setIsConverting(false);
         }
