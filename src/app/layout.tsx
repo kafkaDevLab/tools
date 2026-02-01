@@ -12,6 +12,7 @@ import {
 } from '@/lib/constants/site';
 import { PAGE_SEO } from '@/lib/constants/seo';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { GoogleAdSense } from '@/components/GoogleAdSense';
 
 const homeSeo = PAGE_SEO['/'];
 
@@ -83,6 +84,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className={notoSansKR.className}>
         <GoogleAnalytics />
+        <GoogleAdSense />
         {children}
       </body>
     </html>

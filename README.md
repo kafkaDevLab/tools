@@ -16,3 +16,9 @@
 3. **동작**
    - 위 변수가 설정되면 모든 페이지에 gtag.js가 로드되고 페이지뷰가 수집됩니다.
    - 변수가 없으면 GA 스크립트는 추가되지 않습니다.
+
+## Google AdSense
+
+- AdSense 스크립트(`adsbygoogle.js`)가 루트 레이아웃에 포함되어 있습니다.
+- 클라이언트 ID 기본값: `ca-pub-1397121992275628` (환경 변수로 덮어쓸 수 있음).
+- 다른 퍼블리셔 ID를 쓰려면 환경 변수 `NEXT_PUBLIC_ADSENSE_CLIENT_ID`에 해당 `ca-pub-xxxxxxxx` 값을 설정하세요.
