@@ -25,17 +25,18 @@ export default function QrGeneratorPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
-        <div className="max-w-lg mx-auto">
-          <div className="text-center mb-4">
-            <div className="flex justify-center mb-2">
-              <div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600">
-                <QrCode size={24} />
-              </div>
+        <div className="max-w-6xl mx-auto mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 shrink-0 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600">
+              <QrCode size={24} />
             </div>
-            <h1 className="text-2xl font-bold mb-1 text-slate-900">QR 코드 생성기</h1>
-            <p className="text-slate-500 text-sm">텍스트나 URL을 입력하면 QR 코드를 만들고 PNG로 저장할 수 있습니다.</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold mb-1 text-slate-900">QR 코드 생성기</h1>
+              <p className="text-slate-500 text-sm">텍스트나 URL을 입력하면 QR 코드를 만들고 PNG로 저장할 수 있습니다.</p>
+            </div>
           </div>
-
+        </div>
+        <div className="max-w-lg mx-auto">
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">내용 (URL 또는 텍스트)</label>

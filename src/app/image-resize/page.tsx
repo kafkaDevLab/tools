@@ -264,17 +264,18 @@ export default function ImageResizePage() {
         <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
             <Header />
             <main className="flex-grow pt-24 pb-12 px-6">
-                <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-4">
-                        <div className="flex justify-center mb-2">
-                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-                                <Maximize2 size={24} />
-                            </div>
+                <div className="max-w-6xl mx-auto mb-4">
+                    <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 shrink-0 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
+                            <Maximize2 size={24} />
                         </div>
-                        <h1 className="text-2xl font-bold mb-1 text-slate-900">이미지 크기 조절</h1>
-                        <p className="text-slate-500 text-sm">픽셀, 퍼센트, 프리셋 크기로 이미지를 리사이징하세요</p>
+                        <div className="min-w-0">
+                            <h1 className="text-2xl font-bold mb-1 text-slate-900">이미지 크기 조절</h1>
+                            <p className="text-slate-500 text-sm">픽셀, 퍼센트, 프리셋 크기로 이미지를 리사이징하세요</p>
+                        </div>
                     </div>
-
+                </div>
+                <div className="max-w-5xl mx-auto">
                     {/* Settings Panel */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
                         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2">

@@ -4,11 +4,43 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2 } from 'lucide-react';
+import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Home() {
   const tools = [
+    {
+      id: 'image-convert',
+      title: '이미지 확장자 변환',
+      description: 'JPG, PNG, WebP, GIF 간 자유롭게 변환하고 품질을 조절하세요.',
+      icon: <ImageIcon className="w-8 h-8 text-orange-500" />,
+      color: 'bg-orange-50 hover:border-orange-200',
+      link: '/image-convert'
+    },
+    {
+      id: 'image-resize',
+      title: '이미지 크기 조절',
+      description: '픽셀, 퍼센트, 프리셋 크기로 이미지를 리사이징하세요.',
+      icon: <Maximize2 className="w-8 h-8 text-blue-400" />,
+      color: 'bg-blue-50 hover:border-blue-200',
+      link: '/image-resize'
+    },
+    {
+      id: 'color-converter',
+      title: '색 조합',
+      description: '팔레트 프리셋을 선택하고 HEX, RGB, HSL로 실시간 변환·편집하세요.',
+      icon: <Palette className="w-8 h-8 text-violet-500" />,
+      color: 'bg-violet-50 hover:border-violet-200',
+      link: '/color-converter'
+    },
+    {
+      id: 'gradient',
+      title: '그라데이션',
+      description: '시작·끝 색상과 방향을 선택해 CSS linear-gradient 코드를 생성하세요.',
+      icon: <Layers className="w-8 h-8 text-violet-400" />,
+      color: 'bg-violet-50 hover:border-violet-200',
+      link: '/gradient'
+    },
     {
       id: 'savings',
       title: '26주 적금 계산기',
@@ -32,22 +64,6 @@ export default function Home() {
       icon: <TrendingUp className="w-8 h-8 text-purple-500" />,
       color: 'bg-purple-50 hover:border-purple-200',
       link: '/dividend'
-    },
-    {
-      id: 'image-convert',
-      title: '이미지 확장자 변환',
-      description: 'JPG, PNG, WebP, GIF 간 자유롭게 변환하고 품질을 조절하세요.',
-      icon: <ImageIcon className="w-8 h-8 text-orange-500" />,
-      color: 'bg-orange-50 hover:border-orange-200',
-      link: '/image-convert'
-    },
-    {
-      id: 'image-resize',
-      title: '이미지 크기 조절',
-      description: '픽셀, 퍼센트, 프리셋 크기로 이미지를 리사이징하세요.',
-      icon: <Maximize2 className="w-8 h-8 text-blue-400" />,
-      color: 'bg-blue-50 hover:border-blue-200',
-      link: '/image-resize'
     },
     {
       id: 'json-formatter',

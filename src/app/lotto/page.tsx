@@ -319,15 +319,18 @@ export default function LottoPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
-          <div className="max-w-2xl mx-auto text-center">
-          <div className="flex justify-center mb-2">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center text-green-600 shadow-sm">
+        <div className="max-w-6xl mx-auto mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 shrink-0 bg-green-100 rounded-xl flex items-center justify-center text-green-600 shadow-sm">
               <Clover size={24} />
             </div>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold mb-1 text-slate-900">로또 번호 추출기</h1>
+              <p className="text-slate-500 text-sm">행운의 번호를 확인해보세요.</p>
+            </div>
           </div>
-          <h1 className="text-2xl font-bold mb-1 text-slate-900">로또 번호 추출기</h1>
-          <p className="text-slate-500 text-sm mb-4">행운의 번호를 확인해보세요.</p>
-
+        </div>
+          <div className="max-w-2xl mx-auto">
           {/* Tabs */}
           <div className="flex rounded-full bg-slate-200 p-1 mb-8 max-w-xs mx-auto">
             <button

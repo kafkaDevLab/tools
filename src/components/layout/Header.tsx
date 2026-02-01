@@ -27,9 +27,6 @@ export default function Header() {
 
   const navLinks: NavLink[] = [
     { name: '홈', path: '/' },
-    { name: '26주 적금', path: '/savings' },
-    { name: '로또 번호', path: '/lotto' },
-    { name: '배당금 계산', path: '/dividend' },
     {
       name: '이미지',
       submenu: [
@@ -37,12 +34,21 @@ export default function Header() {
         { name: '크기 조절', path: '/image-resize' },
       ],
     },
+    {
+      name: '색상',
+      submenu: [
+        { name: '색 조합', path: '/color-converter' },
+        { name: '그라데이션', path: '/gradient' },
+      ],
+    },
+    { name: '26주 적금', path: '/savings' },
+    { name: '로또 번호', path: '/lotto' },
+    { name: '배당금 계산', path: '/dividend' },
     { name: 'JSON 포맷터', path: '/json-formatter' },
     {
       name: '유틸',
       submenu: [
         { name: '비밀번호 생성', path: '/password-generator' },
-        { name: '색 조합', path: '/color-converter' },
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
         { name: '정규식 테스터', path: '/regex-tester' },

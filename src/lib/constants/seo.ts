@@ -106,6 +106,11 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       '색 조합 프리셋을 선택하고 HEX, RGB, HSL로 실시간 변환·편집할 수 있습니다.',
     keywords: ['색 조합', 'HEX RGB HSL', '색상 코드 변환', '컬러 피커', '팔레트'],
   },
+  '/gradient': {
+    title: '그라데이션',
+    description: '시작·끝 색상과 방향을 선택해 CSS linear-gradient 코드를 생성하고 복사할 수 있습니다.',
+    keywords: ['그라데이션', 'CSS gradient', 'linear-gradient', '그라데이션 생성'],
+  },
   '/base64': {
     title: 'Base64 인코더·디코더',
     description:

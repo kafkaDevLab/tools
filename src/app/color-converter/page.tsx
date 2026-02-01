@@ -151,8 +151,6 @@ const COLOR_BLIND_OPTIONS: { type: ColorBlindType; label: string }[] = [
   { type: 'achromatopsia', label: 'Achromatopsia (전색맹)' },
 ];
 
-const DEFAULT_PALETTE = ['#3b82f6', '#ef4444', '#22c55e', '#eab308', '#8b5cf6'];
-
 const COLOR_PRESETS: { name: string; colors: string[] }[] = [
   { name: '오션 블루', colors: ['#0ea5e9', '#06b6d4', '#22d3ee', '#67e8f9', '#a5f3fc'] },
   { name: '선셋 웜', colors: ['#f97316', '#fb923c', '#fdba74', '#fed7aa', '#ffedd5'] },
@@ -411,7 +409,7 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 export default function ColorConverterPage() {
-  const [colors, setColors] = useState<string[]>(() => [...DEFAULT_PALETTE]);
+  const [colors, setColors] = useState<string[]>(() => generateRecommendedPalette());
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
   const [colorInfoHex, setColorInfoHex] = useState<string | null>(null);
@@ -561,17 +559,18 @@ export default function ColorConverterPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-4">
-            <div className="flex justify-center mb-2">
-              <div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600">
-                <Palette size={24} />
-              </div>
+        <div className="max-w-6xl mx-auto mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 shrink-0 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600">
+              <Palette size={24} />
             </div>
-            <h1 className="text-2xl font-bold mb-1 text-slate-900">색 조합</h1>
-            <p className="text-slate-500 text-sm">프리셋을 선택하거나 색상에 마우스를 올려 메뉴에서 제거·이동·대비·상세 정보를 확인할 수 있습니다.</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold mb-1 text-slate-900">색 조합</h1>
+              <p className="text-slate-500 text-sm">프리셋을 선택하거나 색상에 마우스를 올려 메뉴에서 제거·이동·대비·상세 정보를 확인할 수 있습니다.</p>
+            </div>
           </div>
-
+        </div>
+        <div className="max-w-6xl mx-auto">
           {/* 상단: 수정 영역 (넓게) */}
           <div className="w-full mb-10" ref={menuRef}>
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">

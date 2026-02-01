@@ -144,20 +144,21 @@ export default function RegexTesterPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-4">
-            <div className="flex justify-center mb-2">
-              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600">
-                <Regex size={24} />
-              </div>
+        <div className="max-w-6xl mx-auto mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 shrink-0 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600">
+              <Regex size={24} />
             </div>
-            <h1 className="text-2xl font-bold mb-1 text-slate-900">정규식 테스터</h1>
-            <p className="text-slate-500 text-sm mb-1">패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.</p>
-            <p className="text-slate-400 text-xs">
-              각 항목 옆 <HelpCircle className="inline w-3.5 h-3.5 align-middle text-slate-400" /> 아이콘에 마우스를 올리면 설명이 나옵니다.
-            </p>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold mb-1 text-slate-900">정규식 테스터</h1>
+              <p className="text-slate-500 text-sm mb-1">패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.</p>
+              <p className="text-slate-400 text-xs">
+                각 항목 옆 <HelpCircle className="inline w-3.5 h-3.5 align-middle text-slate-400" /> 아이콘에 마우스를 올리면 설명이 나옵니다.
+              </p>
+            </div>
           </div>
-
+        </div>
+        <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">
             <div>
               <Tooltip content="원하는 조건을 클릭하면 위쪽 패턴 입력란에 삽입됩니다. 여러 개 조합해서 사용할 수 있어요.">
