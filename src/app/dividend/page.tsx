@@ -45,14 +45,14 @@ export default function DividendPage() {
             <Header />
             <main className="flex-grow pt-24 pb-12 px-6">
                 <div className="max-w-4xl mx-auto">
-                    <div className="text-center mb-10">
-                        <div className="flex justify-center mb-4">
-                            <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600">
-                                <TrendingUp size={32} />
+                    <div className="text-center mb-4">
+                        <div className="flex justify-center mb-2">
+                            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
+                                <TrendingUp size={24} />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold mb-2 text-slate-900">배당금 계산기</h1>
-                        <p className="text-slate-500">보유 주식의 예상 배당 수익을 계산해보세요.</p>
+                        <h1 className="text-2xl font-bold mb-1 text-slate-900">배당금 계산기</h1>
+                        <p className="text-slate-500 text-sm">보유 주식의 예상 배당 수익을 계산해보세요.</p>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

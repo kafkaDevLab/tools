@@ -90,14 +90,14 @@ export default function Base64Page() {
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600">
-                <FileCode size={32} />
+          <div className="text-center mb-4">
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
+                <FileCode size={24} />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2 text-slate-900">Base64 인코더·디코더</h1>
-            <p className="text-slate-500">텍스트와 파일을 Base64로 인코딩·디코딩하세요.</p>
+            <h1 className="text-2xl font-bold mb-1 text-slate-900">Base64 인코더·디코더</h1>
+            <p className="text-slate-500 text-sm">텍스트와 파일을 Base64로 인코딩·디코딩하세요.</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">

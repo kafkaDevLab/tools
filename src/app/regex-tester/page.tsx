@@ -145,15 +145,15 @@ export default function RegexTesterPage() {
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600">
-                <Regex size={32} />
+          <div className="text-center mb-4">
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600">
+                <Regex size={24} />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2 text-slate-900">정규식 테스터</h1>
-            <p className="text-slate-500 mb-1">패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.</p>
-            <p className="text-slate-400 text-sm">
+            <h1 className="text-2xl font-bold mb-1 text-slate-900">정규식 테스터</h1>
+            <p className="text-slate-500 text-sm mb-1">패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.</p>
+            <p className="text-slate-400 text-xs">
               각 항목 옆 <HelpCircle className="inline w-3.5 h-3.5 align-middle text-slate-400" /> 아이콘에 마우스를 올리면 설명이 나옵니다.
             </p>
           </div>

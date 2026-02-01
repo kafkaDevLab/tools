@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Palette, Copy, Check, Trash2, Info, GripVertical, Camera, Eye, ChevronDown, Plus } from 'lucide-react';
+import { Palette, Copy, Check, Trash2, Info, GripVertical, Camera, Eye, ChevronDown, Plus, Sparkles } from 'lucide-react';
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const m = hex.replace(/^#/, '').match(/^([0-9a-f]{3}|[0-9a-f]{6})$/i);
@@ -315,7 +315,100 @@ const COLOR_PRESETS: { name: string; colors: string[] }[] = [
   { name: '서퍼', colors: ['#0c4a6e', '#075985', '#0284c7', '#0ea5e9', '#38bdf8'] },
   { name: '블랙 커피', colors: ['#0c0a09', '#1c1917', '#292524', '#44403c', '#57534e'] },
   { name: '푸시아 블룸', colors: ['#86198f', '#a21caf', '#c026d3', '#d946ef', '#e879f9'] },
+  // 다양한 색 조합 (비그라데이션)
+  { name: '보색 블루 오렌지', colors: ['#2563eb', '#3b82f6', '#f97316', '#fb923c', '#1e293b'] },
+  { name: '삼원색', colors: ['#ef4444', '#eab308', '#3b82f6', '#22c55e', '#8b5cf6'] },
+  { name: '트로피칼', colors: ['#22c55e', '#14b8a6', '#f97316', '#eab308', '#ec4899'] },
+  { name: '레트로 믹스', colors: ['#ca8a04', '#0d9488', '#f97316', '#fef3c7', '#7c3aed'] },
+  { name: '쥬얼 톤', colors: ['#059669', '#2563eb', '#b91c1c', '#7c3aed', '#b45309'] },
+  { name: '파스텔 믹스', colors: ['#c4b5fd', '#99f6e4', '#fbcfe8', '#7dd3fc', '#fef08a'] },
+  { name: '선셋 팔레트', colors: ['#f472b6', '#fb923c', '#a78bfa', '#38bdf8', '#1e293b'] },
+  { name: '포레스트 앤 베리', colors: ['#166534', '#22c55e', '#4ade80', '#881337', '#be185d'] },
+  { name: '오션 앤 샌드', colors: ['#0ea5e9', '#38bdf8', '#fef3c7', '#d6d3d1', '#78716c'] },
+  { name: '시트러스', colors: ['#facc15', '#84cc16', '#f97316', '#fb7185', '#fef08a'] },
+  { name: '뉴트럴 앤 프라이머리', colors: ['#525252', '#a3a3a3', '#ef4444', '#3b82f6', '#eab308'] },
+  { name: '하이 컨트라스트', colors: ['#0f172a', '#f8fafc', '#dc2626', '#eab308', '#2563eb'] },
+  { name: '네온 팝', colors: ['#22d3ee', '#a855f7', '#facc15', '#22c55e', '#f472b6'] },
+  { name: '어스 톤', colors: ['#78350f', '#a16207', '#14532d', '#fef3c7', '#c2410c'] },
+  { name: '베리 믹스', colors: ['#e11d48', '#7c3aed', '#1e3a8a', '#4c0519', '#fda4af'] },
+  { name: '스플릿 컴플리멘터리', colors: ['#2563eb', '#f97316', '#84cc16', '#1e293b', '#fef08a'] },
+  { name: '모노 앤 팝', colors: ['#404040', '#737373', '#a3a3a3', '#22c55e', '#f472b6'] },
+  { name: '티타닉 블루 골드', colors: ['#0c4a6e', '#0369a1', '#fbbf24', '#fef08a', '#1e293b'] },
+  { name: '민트 코랄', colors: ['#2dd4bf', '#99f6e4', '#fb7185', '#fecdd3', '#0f766e'] },
+  { name: '인디고 앤 앰버', colors: ['#4f46e5', '#818cf8', '#f59e0b', '#fef3c7', '#312e81'] },
 ];
+
+/** HSL로 조화로운 5색 팔레트 생성 (색채 이론 기반) */
+function generateRecommendedPalette(): string[] {
+  const h = Math.floor(Math.random() * 360);
+  const styles = [
+    () => {
+      // 보색 + 변형: 메인, 보색, 메인 쪽 2단계, 보색 쪽 2단계
+      const s1 = 55 + Math.random() * 35;
+      const l1 = 35 + Math.random() * 35;
+      const s2 = 50 + Math.random() * 40;
+      const l2 = 40 + Math.random() * 30;
+      return [
+        hslToHex(h, s1, l1),
+        hslToHex((h + 180) % 360, s2, l2),
+        hslToHex(h, Math.min(100, s1 - 15), Math.min(85, l1 + 25)),
+        hslToHex((h + 180) % 360, Math.min(100, s2 - 10), Math.min(90, l2 + 20)),
+        hslToHex((h + 20) % 360, 25 + Math.random() * 25, 50 + Math.random() * 25),
+      ];
+    },
+    () => {
+      // 삼원색: 120도 간격
+      const s = 50 + Math.random() * 40;
+      const l = 40 + Math.random() * 35;
+      return [
+        hslToHex(h, s, l),
+        hslToHex((h + 120) % 360, s * 0.9, l + (Math.random() > 0.5 ? 10 : -10)),
+        hslToHex((h + 240) % 360, s * 0.85, l + (Math.random() > 0.5 ? 5 : -5)),
+        hslToHex((h + 60) % 360, s * 0.7, Math.min(80, l + 15)),
+        hslToHex((h + 200) % 360, s * 0.75, Math.max(25, l - 10)),
+      ];
+    },
+    () => {
+      // 유사색(아날로거스) + 한 가지 강조
+      const s = 45 + Math.random() * 40;
+      return [
+        hslToHex(h, s, 45 + Math.random() * 25),
+        hslToHex((h + 25) % 360, s, 40 + Math.random() * 30),
+        hslToHex((h + 50) % 360, s * 0.9, 50 + Math.random() * 25),
+        hslToHex((h - 25 + 360) % 360, s * 0.85, 35 + Math.random() * 30),
+        hslToHex((h + 180) % 360, 50 + Math.random() * 30, 45 + Math.random() * 25),
+      ];
+    },
+    () => {
+      // 스플릿 컴플리멘터리
+      const s = 50 + Math.random() * 35;
+      const l = 38 + Math.random() * 35;
+      return [
+        hslToHex(h, s, l),
+        hslToHex((h + 150) % 360, s * 0.95, l + 5),
+        hslToHex((h + 210) % 360, s * 0.9, l - 5),
+        hslToHex((h + 30) % 360, s * 0.6, Math.min(85, l + 25)),
+        hslToHex((h + 270) % 360, Math.min(100, s * 0.8), Math.max(20, l - 10)),
+      ];
+    },
+    () => {
+      // 파스텔/쥬얼 믹스: 채도·명도 다양
+      const hues = [h, (h + 72) % 360, (h + 144) % 360, (h + 216) % 360, (h + 288) % 360];
+      return hues.map((hi, i) => {
+        const s = i % 2 === 0 ? 35 + Math.random() * 40 : 50 + Math.random() * 35;
+        const l = i % 3 === 0 ? 55 + Math.random() * 25 : 40 + Math.random() * 35;
+        return hslToHex(hi, s, l);
+      });
+    },
+  ];
+  const pick = styles[Math.floor(Math.random() * styles.length)]!;
+  return pick();
+}
+
+function hslToHex(h: number, s: number, l: number): string {
+  const rgb = hslToRgb(h, s, l);
+  return rgbToHex(rgb.r, rgb.g, rgb.b);
+}
 
 export default function ColorConverterPage() {
   const [colors, setColors] = useState<string[]>(() => [...DEFAULT_PALETTE]);
@@ -364,6 +457,11 @@ export default function ColorConverterPage() {
 
   const applyPreset = (preset: { name: string; colors: string[] }) => {
     setColors([...preset.colors]);
+    setOpenMenuIndex(null);
+  };
+
+  const applyRecommendedPalette = () => {
+    setColors(generateRecommendedPalette());
     setOpenMenuIndex(null);
   };
 
@@ -419,8 +517,7 @@ export default function ColorConverterPage() {
   const addColorBlindRow = (type: ColorBlindType) => {
     const opt = COLOR_BLIND_OPTIONS.find((o) => o.type === type);
     const simulated = colors.map((hex) => simulateColorBlind(hex, type));
-    setColorBlindRows((prev) => [
-      ...prev,
+    setColorBlindRows([
       { id: `${type}-${Date.now()}`, type, label: opt?.label ?? type, colors: simulated },
     ]);
     setColorBlindDropdownOpen(false);
@@ -430,69 +527,30 @@ export default function ColorConverterPage() {
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-6">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center text-violet-600">
-                <Palette size={32} />
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-4">
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center text-violet-600">
+                <Palette size={24} />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2 text-slate-900">색 조합</h1>
-            <p className="text-slate-500">프리셋을 선택하거나 색상에 마우스를 올려 메뉴에서 제거·이동·대비·상세 정보를 확인할 수 있습니다.</p>
+            <h1 className="text-2xl font-bold mb-1 text-slate-900">색 조합</h1>
+            <p className="text-slate-500 text-sm">프리셋을 선택하거나 색상에 마우스를 올려 메뉴에서 제거·이동·대비·상세 정보를 확인할 수 있습니다.</p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* 왼쪽: 프리셋 조합 리스트 */}
-            <aside className="w-full md:w-64 shrink-0">
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
-                <h2 className="text-sm font-semibold text-slate-700 mb-3">프리셋 조합</h2>
-                <ul className="space-y-3 max-h-[480px] overflow-y-auto">
-                  {COLOR_PRESETS.map((preset, index) => (
-                    <li key={preset.name}>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => applyPreset(preset)}
-                          className="flex-1 min-w-0 text-left rounded-xl border border-slate-200 p-2 hover:border-violet-300 hover:bg-violet-50/50 transition-colors"
-                        >
-                          <div className="flex gap-0 overflow-hidden rounded-lg mb-1.5">
-                            {preset.colors.map((c, i) => (
-                              <span
-                                key={i}
-                                className="flex-1 h-10 shrink-0"
-                                style={{ backgroundColor: c }}
-                              />
-                            ))}
-                          </div>
-                          <span className="text-xs font-medium text-slate-700 truncate block">{preset.name}</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            copyPresetHex(preset, index);
-                          }}
-                          className="shrink-0 p-2 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-colors"
-                          title="색상 HEX 전체 복사"
-                        >
-                          {copiedPresetIndex === index ? (
-                            <Check size={16} className="text-green-600" />
-                          ) : (
-                            <Copy size={16} />
-                          )}
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </aside>
-
-            {/* 오른쪽: 색상 슬롯 (호버/클릭 시 메뉴) */}
-            <div className="flex-1 min-w-0" ref={menuRef}>
+          {/* 상단: 수정 영역 (넓게) */}
+          <div className="w-full mb-10" ref={menuRef}>
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
                 {/* 상단 아이콘 메뉴바 */}
                 <div className="flex items-center gap-2 mb-3">
+                  <button
+                    type="button"
+                    onClick={applyRecommendedPalette}
+                    className="p-2 rounded-lg border border-violet-200 text-violet-600 hover:bg-violet-50 hover:border-violet-300 transition-colors"
+                    title="AI 추천 5색 조합"
+                  >
+                    <Sparkles size={18} />
+                  </button>
                   <button
                     type="button"
                     onClick={() => setColors((prev) => [...prev, '#ffffff'])}
@@ -559,7 +617,7 @@ export default function ColorConverterPage() {
                     return (
                       <div
                         key={i}
-                        className={`relative flex-1 min-w-0 flex flex-col shrink-0 min-h-[280px] transition-shadow ${
+                        className={`relative flex-1 min-w-0 flex flex-col shrink-0 min-h-[360px] transition-shadow ${
                           menuVisible ? 'z-[100]' : ''
                         } ${
                           dragOverIndex === i ? 'ring-2 ring-white ring-inset shadow-inner' : ''
@@ -750,6 +808,49 @@ export default function ColorConverterPage() {
                 )}
               </div>
             </div>
+
+          {/* 하단: 프리셋 조합 (3열 그리드) */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+            <h2 className="text-sm font-semibold text-slate-700 mb-4">프리셋 조합</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {COLOR_PRESETS.map((preset, index) => (
+                <li key={preset.name}>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => applyPreset(preset)}
+                      className="flex-1 min-w-0 text-left rounded-xl border border-slate-200 p-2.5 hover:border-violet-300 hover:bg-violet-50/50 transition-colors"
+                    >
+                      <div className="flex gap-0 overflow-hidden rounded-lg mb-1.5">
+                        {preset.colors.map((c, i) => (
+                          <span
+                            key={i}
+                            className="flex-1 h-10 shrink-0"
+                            style={{ backgroundColor: c }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs font-medium text-slate-700 truncate block">{preset.name}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        copyPresetHex(preset, index);
+                      }}
+                      className="shrink-0 p-2 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-colors"
+                      title="색상 HEX 전체 복사"
+                    >
+                      {copiedPresetIndex === index ? (
+                        <Check size={16} className="text-green-600" />
+                      ) : (
+                        <Copy size={16} />
+                      )}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </main>

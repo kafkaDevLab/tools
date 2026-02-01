@@ -62,14 +62,14 @@ export default function PasswordGeneratorPage() {
       <Header />
       <main className="flex-grow pt-24 pb-12 px-6">
         <div className="max-w-lg mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600">
-                <Key size={32} />
+          <div className="text-center mb-4">
+            <div className="flex justify-center mb-2">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
+                <Key size={24} />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2 text-slate-900">비밀번호 생성기</h1>
-            <p className="text-slate-500">길이와 문자 종류를 선택한 뒤 생성·복사하세요.</p>
+            <h1 className="text-2xl font-bold mb-1 text-slate-900">비밀번호 생성기</h1>
+            <p className="text-slate-500 text-sm">길이와 문자 종류를 선택한 뒤 생성·복사하세요.</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-6">

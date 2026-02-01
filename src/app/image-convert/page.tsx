@@ -216,14 +216,14 @@ export default function ImageConvertPage() {
             <Header />
             <main className="flex-grow pt-24 pb-12 px-6">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-10">
-                        <div className="flex justify-center mb-4">
-                            <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600">
-                                <ImageIcon size={32} />
+                    <div className="text-center mb-4">
+                        <div className="flex justify-center mb-2">
+                            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600">
+                                <ImageIcon size={24} />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold mb-2 text-slate-900">이미지 확장자 변환</h1>
-                        <p className="text-slate-500">다양한 이미지 포맷을 손쉽게 변환하세요</p>
+                        <h1 className="text-2xl font-bold mb-1 text-slate-900">이미지 확장자 변환</h1>
+                        <p className="text-slate-500 text-sm">다양한 이미지 포맷을 손쉽게 변환하세요</p>
                     </div>
 
                     {/* Settings Panel */}

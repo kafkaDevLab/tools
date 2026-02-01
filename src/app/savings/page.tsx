@@ -133,14 +133,14 @@ export default function SavingsPage() {
             <main className="flex-grow pt-24 pb-12 px-6">
                 <div className="max-w-5xl mx-auto">
                     {/* Header Section */}
-                    <div className="text-center mb-10">
-                        <div className="flex justify-center mb-4">
-                            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
-                                <PiggyBank size={32} />
+                    <div className="text-center mb-4">
+                        <div className="flex justify-center mb-2">
+                            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
+                                <PiggyBank size={24} />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold mb-2 text-slate-900">26주 적금 계산기</h1>
-                        <p className="text-slate-500">매주 증액되는 즐거움, 6개월간의 목돈 만들기 도전!</p>
+                        <h1 className="text-2xl font-bold mb-1 text-slate-900">26주 적금 계산기</h1>
+                        <p className="text-slate-500 text-sm">매주 증액되는 즐거움, 6개월간의 목돈 만들기 도전!</p>
                     </div>
 
                     {/* Mode Switcher */}

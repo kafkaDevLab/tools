@@ -121,12 +121,12 @@ export default function JsonFormatterPage() {
             <Header />
             <main className="flex-grow pt-24 pb-12 px-6">
                 <div className="max-w-7xl mx-auto h-[calc(100vh-180px)] min-h-[600px] flex flex-col">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold mb-2 text-slate-900 flex items-center justify-center gap-2">
-                            <FileJson className="text-yellow-600" />
+                    <div className="text-center mb-4">
+                        <h1 className="text-2xl font-bold mb-1 text-slate-900 flex items-center justify-center gap-2">
+                            <FileJson className="text-yellow-600" size={24} />
                             JSON 포맷터 & 검증기
                         </h1>
-                        <p className="text-slate-500">JSON 데이터를 검증하고 보기 좋게 정렬합니다.</p>
+                        <p className="text-slate-500 text-sm">JSON 데이터를 검증하고 보기 좋게 정렬합니다.</p>
                     </div>
 
                     <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
