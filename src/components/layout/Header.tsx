@@ -41,9 +41,6 @@ export default function Header() {
         { name: '그라데이션', path: '/gradient' },
       ],
     },
-    { name: '26주 적금', path: '/savings' },
-    { name: '로또 번호', path: '/lotto' },
-    { name: '배당금 계산', path: '/dividend' },
     { name: 'JSON 포맷터', path: '/json-formatter' },
     {
       name: '유틸',
@@ -52,6 +49,14 @@ export default function Header() {
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
         { name: '정규식 테스터', path: '/regex-tester' },
+      ],
+    },
+    {
+      name: '금융',
+      submenu: [
+        { name: '26주 적금', path: '/savings' },
+        { name: '로또 번호', path: '/lotto' },
+        { name: '배당금 계산', path: '/dividend' },
       ],
     },
   ];

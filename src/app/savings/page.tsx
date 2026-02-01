@@ -131,7 +131,7 @@ export default function SavingsPage() {
         <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
             <Header />
             <main className="flex-grow pt-24 pb-12 px-6">
-                <div className="max-w-6xl mx-auto mb-4">
+                <div className="max-w-6xl mx-auto mb-4 flex justify-center">
                     <div className="flex items-start gap-4">
                         <div className="w-12 h-12 shrink-0 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
                             <PiggyBank size={24} />
