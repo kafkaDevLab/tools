@@ -41,10 +41,10 @@ export default function Header() {
         { name: '그라데이션', path: '/gradient' },
       ],
     },
-    { name: 'JSON 포맷터', path: '/json-formatter' },
     {
       name: '유틸',
       submenu: [
+        { name: 'JSON 포맷터', path: '/json-formatter' },
         { name: '비밀번호 생성', path: '/password-generator' },
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
