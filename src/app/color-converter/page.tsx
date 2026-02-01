@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Palette, Copy, Check, Trash2, Info, GripVertical, Camera, Eye, ChevronDown, Plus, Sparkles } from 'lucide-react';
+import { Palette, Copy, Check, Trash2, Info, GripVertical, Camera, Eye, ChevronDown, Plus, Sparkles, Download } from 'lucide-react';
 
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const m = hex.replace(/^#/, '').match(/^([0-9a-f]{3}|[0-9a-f]{6})$/i);
@@ -424,8 +424,42 @@ export default function ColorConverterPage() {
   const [captureSuccess, setCaptureSuccess] = useState(false);
   const [editingHex, setEditingHex] = useState<{ index: number; value: string } | null>(null);
   const [menuInputFocusedIndex, setMenuInputFocusedIndex] = useState<number | null>(null);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [exportFormat, setExportFormat] = useState<'css' | 'tailwind' | 'html'>('css');
+  const [exportCopied, setExportCopied] = useState<'css' | 'tailwind' | 'html' | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
+
+  const COLOR_NAMES = ['primary', 'secondary', 'tertiary', 'accent', 'muted', 'neutral', 'surface', 'background'];
+  const validExportColors = () => colors.filter((c) => /^#[0-9a-f]{6}$/i.test(c));
+  const getExportCss = () => {
+    const list = validExportColors();
+    return list
+      .map((hex, i) => `  --color-${COLOR_NAMES[i] ?? `color-${i + 1}`}: ${hex};`)
+      .join('\n');
+  };
+  const getExportCssBlock = () => `:root {\n${getExportCss()}\n}`;
+  const getExportTailwind = () => {
+    const list = validExportColors();
+    const entries = list.map((hex, i) => `      ${COLOR_NAMES[i] ?? `color${i + 1}`}: '${hex}'`).join(',\n');
+    return `// tailwind.config.js - theme.extend.colors\n  theme: {\n    extend: {\n      colors: {\n${entries}\n      }\n    }\n  }`;
+  };
+  const getExportHtml = () => {
+    const list = validExportColors();
+    const vars = list.map((hex, i) => `  --color-${COLOR_NAMES[i] ?? `color-${i + 1}`}: ${hex};`).join('\n');
+    return `<style>\n:root {\n${vars}\n}\n</style>`;
+  };
+  const copyExport = async (format: 'css' | 'tailwind' | 'html') => {
+    const text =
+      format === 'css' ? getExportCssBlock() : format === 'tailwind' ? getExportTailwind() : getExportHtml();
+    try {
+      await navigator.clipboard.writeText(text);
+      setExportCopied(format);
+      setTimeout(() => setExportCopied(null), 2000);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -574,6 +608,14 @@ export default function ColorConverterPage() {
                     title="HEX 값들 복사"
                   >
                     {hexCopied ? <Check size={18} className="text-green-600" /> : <Copy size={18} />}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setExportModalOpen(true)}
+                    className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                    title="CSS / Tailwind / HTML로 추출"
+                  >
+                    <Download size={18} />
                   </button>
                   <div className="relative">
                     <button
@@ -855,6 +897,64 @@ export default function ColorConverterPage() {
         </div>
       </main>
       <Footer />
+
+      {/* Export layer popup */}
+      {exportModalOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 p-4"
+          onClick={() => setExportModalOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Export palette"
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl border border-slate-200 p-6 w-full max-w-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">팔레트 추출</h3>
+            <div className="flex gap-2 mb-4">
+              {(['css', 'tailwind', 'html'] as const).map((fmt) => (
+                <button
+                  key={fmt}
+                  type="button"
+                  onClick={() => setExportFormat(fmt)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    exportFormat === fmt ? 'bg-violet-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {fmt === 'css' ? 'CSS' : fmt === 'tailwind' ? 'Tailwind' : 'HTML'}
+                </button>
+              ))}
+            </div>
+            <div className="rounded-xl bg-slate-900 text-slate-100 p-4 font-mono text-sm overflow-x-auto max-h-64 overflow-y-auto">
+              <pre className="whitespace-pre-wrap break-all">
+                {exportFormat === 'css'
+                  ? getExportCssBlock()
+                  : exportFormat === 'tailwind'
+                    ? getExportTailwind()
+                    : getExportHtml()}
+              </pre>
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => copyExport(exportFormat)}
+                className="px-4 py-2 rounded-xl bg-violet-600 text-white text-sm font-medium hover:bg-violet-700 transition-colors flex items-center gap-2"
+              >
+                {exportCopied === exportFormat ? <Check size={16} /> : <Copy size={16} />}
+                {exportCopied === exportFormat ? '복사됨' : '복사'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setExportModalOpen(false)}
+                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-sm font-medium hover:bg-slate-200 transition-colors"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Color info layer popup */}
       {colorInfoHex && (() => {
