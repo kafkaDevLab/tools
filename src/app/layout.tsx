@@ -72,6 +72,7 @@ export const metadata: Metadata = {
   },
   other: {
     'naver-site-verification': process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION || '',
+    'google-adsense-account': process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || 'ca-pub-1397121992275628',
   },
 };
 
