@@ -45,6 +45,10 @@ export default function Header() {
       name: '유틸',
       submenu: [
         { name: 'JSON 포맷터', path: '/json-formatter' },
+        { name: '글자 수·단어 수', path: '/word-counter' },
+        { name: 'URL 인코더', path: '/url-encoder' },
+        { name: 'JWT 디코더', path: '/jwt-decoder' },
+        { name: 'UUID 생성기', path: '/uuid-generator' },
         { name: '비밀번호 생성', path: '/password-generator' },
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
@@ -57,6 +61,7 @@ export default function Header() {
         { name: '26주 적금', path: '/savings' },
         { name: '로또 번호', path: '/lotto' },
         { name: '배당금 계산', path: '/dividend' },
+        { name: '부가세 계산', path: '/vat-calculator' },
       ],
     },
   ];

@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex } from 'lucide-react';
+import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex, Type, Link2, Shield, Hash, Calculator } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Home() {
@@ -104,6 +104,46 @@ export default function Home() {
       icon: <Regex className="w-6 h-6 text-sky-500" />,
       color: 'bg-sky-50 hover:border-sky-200',
       link: '/regex-tester'
+    },
+    {
+      id: 'word-counter',
+      title: '글자 수·단어 수 카운터',
+      description: '입력 시 실시간으로 글자 수, 단어 수, 줄 수를 확인하세요.',
+      icon: <Type className="w-6 h-6 text-sky-500" />,
+      color: 'bg-sky-50 hover:border-sky-200',
+      link: '/word-counter'
+    },
+    {
+      id: 'url-encoder',
+      title: 'URL 인코더·디코더',
+      description: '텍스트를 percent-encoding으로 인코딩·디코딩하세요.',
+      icon: <Link2 className="w-6 h-6 text-emerald-500" />,
+      color: 'bg-emerald-50 hover:border-emerald-200',
+      link: '/url-encoder'
+    },
+    {
+      id: 'jwt-decoder',
+      title: 'JWT 디코더',
+      description: 'JWT 토큰을 붙여넣으면 Header·Payload를 읽기 쉽게 보여줍니다.',
+      icon: <Shield className="w-6 h-6 text-indigo-500" />,
+      color: 'bg-indigo-50 hover:border-indigo-200',
+      link: '/jwt-decoder'
+    },
+    {
+      id: 'uuid-generator',
+      title: 'UUID 생성기',
+      description: 'UUID v4를 생성하고 클립보드로 복사할 수 있습니다.',
+      icon: <Hash className="w-6 h-6 text-teal-500" />,
+      color: 'bg-teal-50 hover:border-teal-200',
+      link: '/uuid-generator'
+    },
+    {
+      id: 'vat-calculator',
+      title: '부가세 계산기',
+      description: '공급가액 또는 세금 포함 금액으로 부가세·합계를 계산합니다.',
+      icon: <Calculator className="w-6 h-6 text-rose-500" />,
+      color: 'bg-rose-50 hover:border-rose-200',
+      link: '/vat-calculator'
     }
   ];
 

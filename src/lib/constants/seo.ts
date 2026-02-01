@@ -129,6 +129,31 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       '정규식 패턴과 테스트 문자열로 매치 결과를 확인하고 하이라이트할 수 있습니다.',
     keywords: ['정규식 테스터', '정규식 테스트', 'regex 테스터', '정규표현식'],
   },
+  '/word-counter': {
+    title: '글자 수·단어 수 카운터',
+    description: '텍스트를 입력하면 실시간으로 글자 수, 단어 수, 줄 수를 확인할 수 있습니다. 블로그·소셜 글 작성에 활용하세요.',
+    keywords: ['글자 수', '단어 수', '글자 수 카운터', '단어 수 카운터', '텍스트 카운터'],
+  },
+  '/url-encoder': {
+    title: 'URL 인코더·디코더',
+    description: '텍스트를 percent-encoding으로 인코딩·디코딩합니다. API·쿼리스트링 작업에 유용합니다.',
+    keywords: ['URL 인코더', 'URL 디코더', 'percent encoding', 'URL 인코딩'],
+  },
+  '/jwt-decoder': {
+    title: 'JWT 디코더',
+    description: 'JWT 토큰을 붙여넣으면 Header·Payload를 읽기 쉽게 보여줍니다. 검증 없이 디코딩만 지원합니다.',
+    keywords: ['JWT 디코더', 'JWT 파싱', 'JWT payload', 'JWT 디코딩'],
+  },
+  '/uuid-generator': {
+    title: 'UUID 생성기',
+    description: 'UUID v4를 생성하고 클립보드로 복사할 수 있습니다. DB ID, 테스트 데이터용.',
+    keywords: ['UUID 생성', 'UUID 생성기', 'UUID v4', '고유 ID'],
+  },
+  '/vat-calculator': {
+    title: '부가세 계산기',
+    description: '공급가액 또는 세금 포함 금액을 입력하면 부가세·합계를 계산합니다. 기본 10% 적용.',
+    keywords: ['부가세 계산기', '부가세 계산', 'VAT 계산', '공급가액', '세금 계산'],
+  },
 };
 
 /** sitemap 등에서 사용할 실제 공개 경로 목록 */
