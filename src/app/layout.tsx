@@ -22,6 +22,9 @@ const notoSansKR = Noto_Sans_KR({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  icons: {
+    icon: '/icon.svg',
+  },
   title: {
     default: homeSeo.title,
     template: `%s | ${SITE_NAME}`,
