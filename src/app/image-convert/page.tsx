@@ -9,6 +9,7 @@ import JSZip from 'jszip';
 interface ConvertedImage {
     originalName: string;
     originalFormat: string;
+    outputFormat: ImageFormat;
     blob: Blob;
     previewUrl: string;
     size: number;
@@ -114,6 +115,7 @@ export default function ImageConvertPage() {
                 newConverted.push({
                     originalName: file.name,
                     originalFormat: getOriginalFormat(file.type),
+                    outputFormat: targetFormat,
                     blob,
                     previewUrl: URL.createObjectURL(blob),
                     size: blob.size,
@@ -145,7 +147,7 @@ export default function ImageConvertPage() {
     const downloadSingle = (img: ConvertedImage) => {
         const link = document.createElement('a');
         link.href = img.previewUrl;
-        link.download = img.originalName.replace(/\.[^/.]+$/, `.${FORMAT_MAP[targetFormat].ext}`);
+        link.download = img.originalName.replace(/\.[^/.]+$/, `.${FORMAT_MAP[img.outputFormat].ext}`);
         link.click();
     };
 
@@ -153,9 +155,9 @@ export default function ImageConvertPage() {
         if (convertedImages.length === 0) return;
 
         const zip = new JSZip();
-        const ext = FORMAT_MAP[targetFormat].ext;
 
         convertedImages.forEach((img) => {
+            const ext = FORMAT_MAP[img.outputFormat].ext;
             const filename = img.originalName.replace(/\.[^/.]+$/, `.${ext}`);
             zip.file(filename, img.blob);
         });
@@ -367,14 +369,22 @@ export default function ImageConvertPage() {
                                     return (
                                         <div key={index} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
                                             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4">
-                                                {/* Preview */}
+                                                {/* Preview - TIFF 등 브라우저 미지원 포맷은 플레이스홀더 */}
                                                 <div className="md:col-span-3">
                                                     <div className="relative aspect-video bg-slate-100 rounded-lg overflow-hidden">
-                                                        <img
-                                                            src={img.previewUrl}
-                                                            alt={img.originalName}
-                                                            className="w-full h-full object-cover"
-                                                        />
+                                                        {img.outputFormat === 'tiff' ? (
+                                                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 p-4">
+                                                                <ImageIcon size={40} className="mb-2 opacity-60" />
+                                                                <span className="text-xs text-center">TIFF 미리보기 미지원</span>
+                                                                <span className="text-xs text-center mt-1">다운로드로 확인하세요</span>
+                                                            </div>
+                                                        ) : (
+                                                            <img
+                                                                src={img.previewUrl}
+                                                                alt={img.originalName}
+                                                                className="w-full h-full object-cover"
+                                                            />
+                                                        )}
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -399,8 +409,8 @@ export default function ImageConvertPage() {
                                                         <span className="text-xs px-2 py-1 rounded font-medium bg-slate-100 text-slate-600">
                                                             →
                                                         </span>
-                                                        <span className={`text-xs px-2 py-1 rounded font-medium ${getFormatColor(FORMAT_MAP[targetFormat].label)}`}>
-                                                            {FORMAT_MAP[targetFormat].label}
+                                                        <span className={`text-xs px-2 py-1 rounded font-medium ${getFormatColor(FORMAT_MAP[img.outputFormat].label)}`}>
+                                                            {FORMAT_MAP[img.outputFormat].label}
                                                         </span>
                                                         <span className="text-xs px-2 py-1 rounded font-medium bg-slate-100 text-slate-600">
                                                             {img.width} × {img.height}
