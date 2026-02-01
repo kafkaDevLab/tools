@@ -11,6 +11,7 @@ import {
   SITE_FORMAT_DETECTION,
 } from '@/lib/constants/site';
 import { PAGE_SEO } from '@/lib/constants/seo';
+import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 
 const homeSeo = PAGE_SEO['/'];
 
@@ -81,6 +82,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={notoSansKR.className}>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>
