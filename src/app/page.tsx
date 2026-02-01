@@ -144,6 +144,14 @@ export default function Home() {
       icon: <Calculator className="w-6 h-6 text-rose-500" />,
       color: 'bg-rose-50 hover:border-rose-200',
       link: '/vat-calculator'
+    },
+    {
+      id: 'stock-analysis',
+      title: '주식 분석',
+      description: '한국·미국 주가 조회, 기술적 지표·차트, AI 참고 해석 (투자 권유 아님).',
+      icon: <TrendingUp className="w-6 h-6 text-emerald-500" />,
+      color: 'bg-emerald-50 hover:border-emerald-200',
+      link: '/stock-analysis'
     }
   ];
 

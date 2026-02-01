@@ -154,6 +154,11 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     description: '공급가액 또는 세금 포함 금액을 입력하면 부가세·합계를 계산합니다. 기본 10% 적용.',
     keywords: ['부가세 계산기', '부가세 계산', 'VAT 계산', '공급가액', '세금 계산'],
   },
+  '/stock-analysis': {
+    title: '주식 분석',
+    description: '한국·미국 주가 조회, 이동평균·RSI·MACD 기술적 지표와 차트, AI 참고 해석. 투자 참고용 (권유 아님).',
+    keywords: ['주식 분석', '주가 조회', '기술적 지표', 'RSI', 'MACD', '이동평균', 'KOSPI', '코스피'],
+  },
 };
 
 /** sitemap 등에서 사용할 실제 공개 경로 목록 */

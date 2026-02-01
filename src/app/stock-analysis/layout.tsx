@@ -1,0 +1,25 @@
+import type { Metadata } from 'next';
+import { PAGE_SEO } from '@/lib/constants/seo';
+import { SITE_URL } from '@/lib/constants/site';
+
+const seo = PAGE_SEO['/stock-analysis'];
+
+export const metadata: Metadata = {
+  title: seo.title,
+  description: seo.description,
+  keywords: seo.keywords,
+  alternates: { canonical: `${SITE_URL}/stock-analysis` },
+  openGraph: {
+    title: seo.title,
+    description: seo.description,
+    url: `${SITE_URL}/stock-analysis`,
+  },
+  twitter: {
+    title: seo.title,
+    description: seo.description,
+  },
+};
+
+export default function StockAnalysisLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}

@@ -62,6 +62,7 @@ export default function Header() {
         { name: '로또 번호', path: '/lotto' },
         { name: '배당금 계산', path: '/dividend' },
         { name: '부가세 계산', path: '/vat-calculator' },
+        { name: '주식 분석', path: '/stock-analysis' },
       ],
     },
   ];
