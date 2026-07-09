@@ -49,6 +49,7 @@ export default function Header() {
         { name: 'Base64', path: '/base64' },
         { name: 'QR 코드', path: '/qr-generator' },
         { name: '정규식 테스터', path: '/regex-tester' },
+        { name: '샤오홍슈 다운로드', path: '/xiaohongshu' },
       ],
     },
     {
