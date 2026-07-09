@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex } from 'lucide-react';
+import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Home() {
@@ -104,6 +104,14 @@ export default function Home() {
       icon: <Regex className="w-6 h-6 text-sky-500" />,
       color: 'bg-sky-50 hover:border-sky-200',
       link: '/regex-tester'
+    },
+    {
+      id: 'xiaohongshu',
+      title: '샤오홍슈 다운로드',
+      description: '샤오홍슈(小红书) 링크만 붙여넣으면 이미지·동영상을 워터마크 없이 저장하세요.',
+      icon: <Download className="w-6 h-6 text-rose-500" />,
+      color: 'bg-rose-50 hover:border-rose-200',
+      link: '/xiaohongshu'
     }
   ];
 
