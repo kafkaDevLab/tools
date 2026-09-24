@@ -18,7 +18,7 @@ interface ConvertedImage {
     height: number;
 }
 
-type ImageFormat = 'jpeg' | 'png' | 'webp' | 'gif' | 'tiff' | 'avif';
+type ImageFormat = 'jpeg' | 'png' | 'webp' | 'gif' | 'avif';
 
 interface FormatInfo {
     label: string;
@@ -31,7 +31,6 @@ const FORMAT_MAP: Record<ImageFormat, FormatInfo> = {
     png: { label: 'PNG', ext: 'png', description: '투명도 지원, 무손실 압축' },
     webp: { label: 'WebP', ext: 'webp', description: '최신 웹 포맷, 우수한 압축률' },
     gif: { label: 'GIF', ext: 'gif', description: '애니메이션 지원, 256색 제한' },
-    tiff: { label: 'TIFF', ext: 'tiff', description: '고품질 인쇄용, 대용량' },
     avif: { label: 'AVIF', ext: 'avif', description: '차세대 포맷, 최고 압축률' },
 };
 
@@ -41,6 +40,7 @@ export default function ImageConvertPage() {
     const [convertedImages, setConvertedImages] = useState<ConvertedImage[]>([]);
     const [targetFormat, setTargetFormat] = useState<ImageFormat>('webp');
     const [quality, setQuality] = useState<number>(80);
+    const [conversionError, setConversionError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFormatChange = (format: ImageFormat) => {
@@ -87,13 +87,17 @@ export default function ImageConvertPage() {
 
     const processFiles = async (files: File[]) => {
         setIsConverting(true);
+        setConversionError(null);
         const newConverted: ConvertedImage[] = [];
 
         for (const file of files) {
-            if (!file.type.startsWith('image/')) continue;
+            if (!file.type.startsWith('image/')) {
+                setConversionError('이미지 파일만 변환할 수 있습니다.');
+                continue;
+            }
 
             try {
-                // Use server-side Sharp conversion via API
+                // Convert through the Cloudflare Images binding.
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('format', targetFormat);
@@ -105,7 +109,8 @@ export default function ImageConvertPage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Conversion failed');
+                    const body = await response.json().catch(() => ({})) as { error?: string };
+                    throw new Error(body.error || '이미지 변환에 실패했습니다.');
                 }
 
                 const blob = await response.blob();
@@ -125,6 +130,7 @@ export default function ImageConvertPage() {
                 });
             } catch (error) {
                 console.error('Error converting file:', file.name, error);
+                setConversionError(`${file.name}: ${error instanceof Error ? error.message : '변환에 실패했습니다.'}`);
             }
         }
 
@@ -229,6 +235,9 @@ export default function ImageConvertPage() {
                     </div>
                 </div>
                 <div className="max-w-5xl mx-auto">
+                    {conversionError && (
+                        <p role="alert" className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{conversionError}</p>
+                    )}
                     {/* Settings Panel */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 mb-8">
                         <h2 className="font-semibold text-lg mb-4 flex items-center gap-2">
@@ -296,7 +305,7 @@ export default function ImageConvertPage() {
                         <p className="text-lg font-medium text-slate-700 mb-2">
                             {isDragOver ? '파일을 놓아주세요' : '이미지를 드래그하거나 클릭하여 업로드'}
                         </p>
-                        <p className="text-sm text-slate-400">JPG, PNG, WebP, GIF, BMP, TIFF, SVG 지원</p>
+                        <p className="text-sm text-slate-400">JPG, PNG, WebP, GIF, HEIC 입력 지원 · 최대 20MB</p>
                         <input
                             ref={fileInputRef}
                             type="file"
@@ -369,22 +378,14 @@ export default function ImageConvertPage() {
                                     return (
                                         <div key={index} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden group">
                                             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4">
-                                                {/* Preview - TIFF 등 브라우저 미지원 포맷은 플레이스홀더 */}
+                                                {/* Converted image preview */}
                                                 <div className="md:col-span-3">
                                                     <div className="relative aspect-video bg-slate-100 rounded-lg overflow-hidden">
-                                                        {img.outputFormat === 'tiff' ? (
-                                                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 p-4">
-                                                                <ImageIcon size={40} className="mb-2 opacity-60" />
-                                                                <span className="text-xs text-center">TIFF 미리보기 미지원</span>
-                                                                <span className="text-xs text-center mt-1">다운로드로 확인하세요</span>
-                                                            </div>
-                                                        ) : (
-                                                            <img
-                                                                src={img.previewUrl}
-                                                                alt={img.originalName}
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        )}
+                                                        <img
+                                                            src={img.previewUrl}
+                                                            alt={img.originalName}
+                                                            className="w-full h-full object-cover"
+                                                        />
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -457,6 +458,25 @@ export default function ImageConvertPage() {
                         </div>
                     )}
                 </div>
+
+                <section className="max-w-5xl mx-auto mt-12 rounded-2xl border border-slate-200 bg-white p-6 md:p-8" aria-labelledby="image-convert-guide">
+                    <h2 id="image-convert-guide" className="text-xl font-bold text-slate-900 mb-4">어떤 이미지 형식으로 변환할까요?</h2>
+                    <div className="grid gap-5 md:grid-cols-3 text-sm text-slate-600 leading-6">
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">JPG: 사진 공유</h3>
+                            <p>사진처럼 색이 많은 이미지에 적합합니다. 투명한 배경이 필요한 로고나 아이콘에는 PNG 또는 WebP를 선택하세요.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">PNG: 투명 배경과 선명한 그래픽</h3>
+                            <p>투명도를 유지해야 하거나 글자·도형의 경계를 선명하게 보관할 때 유용합니다. 사진은 파일 크기가 커질 수 있습니다.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">WebP·AVIF: 웹 게시</h3>
+                            <p>웹페이지용 이미지 용량을 줄이고 싶을 때 비교해 보세요. 변환 후 파일 크기와 화질을 확인하고 사용 환경의 형식 지원 여부도 확인하세요.</p>
+                        </div>
+                    </div>
+                    <p className="mt-5 text-sm text-slate-500 leading-6">여러 파일을 선택하면 같은 설정으로 변환하고 ZIP으로 받을 수 있습니다. 이미지 파일은 변환을 위해 서버로 전송됩니다. 확장자만 바꾼다고 원본보다 화질이 좋아지지는 않습니다.</p>
+                </section>
             </main>
             <Footer />
         </div>

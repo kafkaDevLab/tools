@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -10,6 +10,12 @@ export default function QrGeneratorPage() {
   const [value, setValue] = useState('');
   const [size, setSize] = useState(256);
   const canvasRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const text = sessionStorage.getItem('dailytools:qr-prefill') || new URLSearchParams(window.location.search).get('text');
+    sessionStorage.removeItem('dailytools:qr-prefill');
+    if (text) setValue(text.slice(0, 4000));
+  }, []);
 
   const downloadPng = () => {
     const canvas = canvasRef.current?.querySelector('canvas');

@@ -11,7 +11,7 @@ export const SITE_FORMAT_DETECTION = {
   address: false,
   telephone: false,
 }
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://daily-tools.com'
+export const SITE_URL = 'https://tools.muse-dev.com'
 export const SITE_OG_IMAGE = `${SITE_URL}/og-image.png`
 export const SITE_KEYWORDS = ['Daily Tools', '적금 계산기', '로또 번호', '배당금 계산기', '유틸리티', '금융 도구']
 

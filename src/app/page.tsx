@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex, Type, Link2, Shield, Hash, Calculator } from 'lucide-react';
+import { PiggyBank, Clover, TrendingUp, ArrowRight, Image as ImageIcon, FileJson, Maximize2, Palette, Layers, Key, FileCode, QrCode, Regex, Type, Link2, Shield, Hash, Calculator, Minimize2, Crop, MapPinOff, Files, Table2, CalendarDays } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Home() {
@@ -24,6 +24,62 @@ export default function Home() {
       icon: <Maximize2 className="w-6 h-6 text-blue-400" />,
       color: 'bg-blue-50 hover:border-blue-200',
       link: '/image-resize'
+    },
+    {
+      id: 'image-compress',
+      title: '이미지 용량 줄이기',
+      description: '목표 용량을 정하고 여러 이미지의 압축 전후 크기를 비교하세요.',
+      icon: <Minimize2 className="w-6 h-6 text-orange-500" />,
+      color: 'bg-orange-50 hover:border-orange-200',
+      link: '/image-compress'
+    },
+    {
+      id: 'image-crop',
+      title: '이미지 자르기·회전',
+      description: '비율에 맞게 자르고 90도 회전한 이미지를 저장하세요.',
+      icon: <Crop className="w-6 h-6 text-orange-500" />,
+      color: 'bg-orange-50 hover:border-orange-200',
+      link: '/image-crop'
+    },
+    {
+      id: 'image-metadata',
+      title: '사진 위치정보 제거',
+      description: '사진 메타데이터를 확인하고 제거한 사본을 다운로드하세요.',
+      icon: <MapPinOff className="w-6 h-6 text-orange-500" />,
+      color: 'bg-orange-50 hover:border-orange-200',
+      link: '/image-metadata'
+    },
+    {
+      id: 'pdf-tools',
+      title: 'PDF 합치기·페이지 추출',
+      description: '여러 PDF를 합치거나 필요한 페이지만 골라 저장하세요.',
+      icon: <Files className="w-6 h-6 text-indigo-500" />,
+      color: 'bg-indigo-50 hover:border-indigo-200',
+      link: '/pdf-tools'
+    },
+    {
+      id: 'csv-json',
+      title: 'CSV ↔ JSON 변환',
+      description: '표 데이터와 JSON 객체 배열을 브라우저에서 변환하세요.',
+      icon: <Table2 className="w-6 h-6 text-emerald-500" />,
+      color: 'bg-emerald-50 hover:border-emerald-200',
+      link: '/csv-json'
+    },
+    {
+      id: 'date-calculator',
+      title: '날짜·영업일 계산기',
+      description: '날짜 차이와 주말을 제외한 날짜를 계산하세요.',
+      icon: <CalendarDays className="w-6 h-6 text-blue-500" />,
+      color: 'bg-blue-50 hover:border-blue-200',
+      link: '/date-calculator'
+    },
+    {
+      id: 'utm-builder',
+      title: 'UTM 링크 생성기',
+      description: '캠페인 링크를 만들고 QR 코드로 연결하세요.',
+      icon: <Link2 className="w-6 h-6 text-teal-500" />,
+      color: 'bg-teal-50 hover:border-teal-200',
+      link: '/utm-builder'
     },
     {
       id: 'color-converter',
@@ -144,14 +200,6 @@ export default function Home() {
       icon: <Calculator className="w-6 h-6 text-rose-500" />,
       color: 'bg-rose-50 hover:border-rose-200',
       link: '/vat-calculator'
-    },
-    {
-      id: 'stock-analysis',
-      title: '주식 분석',
-      description: '한국·미국 주가 조회, 기술적 지표·차트, AI 참고 해석 (투자 권유 아님).',
-      icon: <TrendingUp className="w-6 h-6 text-emerald-500" />,
-      color: 'bg-emerald-50 hover:border-emerald-200',
-      link: '/stock-analysis'
     }
   ];
 
@@ -178,7 +226,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Tools Grid - 8개 메뉴 모두 표시 (4열까지) */}
+        {/* Tools Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {tools.map((tool, index) => (
             <motion.div

@@ -11,7 +11,7 @@ import {
   SITE_FORMAT_DETECTION,
 } from '@/lib/constants/site';
 import { PAGE_SEO } from '@/lib/constants/seo';
-import { GoogleAnalytics } from '@/components/GoogleAnalytics';
+import { CloudflareAnalytics } from '@/components/CloudflareAnalytics';
 import { GoogleAdSense } from '@/components/GoogleAdSense';
 
 const homeSeo = PAGE_SEO['/'];
@@ -33,6 +33,7 @@ export const metadata: Metadata = {
   },
   description: homeSeo.description,
   keywords: homeSeo.keywords,
+  alternates: { canonical: SITE_URL },
   authors: [{ name: SITE_AUTHOR }],
   creator: SITE_CREATOR,
   publisher: SITE_PUBLISHER,
@@ -47,14 +48,14 @@ export const metadata: Metadata = {
     images: [
       {
         url: SITE_OG_IMAGE,
-        width: 1200,
-        height: 630,
+        width: 906,
+        height: 943,
         alt: `${SITE_NAME} - Daily Tools`,
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: homeSeo.title,
     description: homeSeo.description,
     images: [SITE_OG_IMAGE],
@@ -84,7 +85,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={notoSansKR.className}>
-        <GoogleAnalytics />
+        <CloudflareAnalytics />
         <GoogleAdSense />
         {children}
       </body>

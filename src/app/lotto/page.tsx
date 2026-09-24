@@ -144,7 +144,7 @@ export default function LottoPage() {
     fetch('/api/lotto/history')
       .then((res) => {
         if (!res.ok) throw new Error('당첨 이력 조회 실패');
-        return res.json();
+        return res.json() as Promise<{ list: LottoDrawItem[] }>;
       })
       .then((data: { list: LottoDrawItem[] }) => {
         setDrawList(data.list || []);
