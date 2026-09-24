@@ -7,13 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: [
-          '/api/',          // API 엔드포인트 차단
-          '/_next/',        // Next.js 내부 파일 차단
-        ],
+        disallow: ['/api/'],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }
-

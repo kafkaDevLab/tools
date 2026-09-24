@@ -1,24 +1,26 @@
 {
-  "name": "musedev---innovative-web-agency",
+  "name": "musedev-tools",
   "private": true,
   "version": "0.0.0",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=22.0.0",
     "npm": ">=9.0.0"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cf:build": "opennextjs-cloudflare build",
+    "cf:preview": "opennextjs-cloudflare preview",
+    "cf:deploy": "opennextjs-cloudflare deploy",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
-    "@google-analytics/data": "^5.2.1",
+    "@opennextjs/cloudflare": "1.20.6",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@react-three/postprocessing": "^3.0.4",
-    "@supabase/ssr": "^0.5.2",
-    "@supabase/supabase-js": "^2.90.1",
     "@tiptap/extension-image": "^3.17.0",
     "@tiptap/extension-link": "^3.17.0",
     "@tiptap/extension-placeholder": "^3.17.0",
@@ -26,24 +28,26 @@
     "@tiptap/starter-kit": "^3.17.0",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
+    "exifr": "^7.1.3",
     "framer-motion": "^12.25.0",
     "html2canvas": "^1.4.1",
+    "jose": "6.1.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.562.0",
     "motion": "^12.26.2",
-    "next": "^15.1.6",
+    "next": "15.5.26",
     "nodemailer": "^6.10.1",
+    "pdf-lib": "^1.17.1",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-is": "^19.2.3",
     "react-json-view": "^1.21.3",
-    "recharts": "^3.7.0",
-    "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "5.20260924.1",
     "@types/node": "^22.14.0",
     "@types/nodemailer": "^6.4.21",
     "@types/react": "^19.0.6",
@@ -53,6 +57,7 @@
     "postcss": "^8.4.35",
     "shadcn": "^3.7.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "wrangler": "4.137.0"
   }
 }

@@ -46,9 +46,11 @@ export default function XiaohongshuPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: trimmed }),
       });
-      const data = await res.json();
+      const data: unknown = await res.json();
       if (!res.ok) {
-        setError(data.error || '처리에 실패했습니다.');
+        setError(data && typeof data === 'object' && 'error' in data && typeof data.error === 'string'
+          ? data.error
+          : '처리에 실패했습니다.');
         return;
       }
       setResult(data as ParseResult);

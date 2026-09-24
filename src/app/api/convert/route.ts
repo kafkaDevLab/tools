@@ -1,78 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import sharp from 'sharp';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-type OutputFormat = 'jpeg' | 'png' | 'webp' | 'gif' | 'tiff' | 'avif';
+type OutputFormat = 'jpeg' | 'png' | 'webp' | 'gif' | 'avif';
+const MIME_TYPES = {
+    jpeg: 'image/jpeg',
+    png: 'image/png',
+    webp: 'image/webp',
+    gif: 'image/gif',
+    avif: 'image/avif',
+} as const;
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
+const INPUT_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic']);
 
 export async function POST(request: NextRequest) {
     try {
         const formData = await request.formData();
-        const file = formData.get('file') as File;
-        const format = (formData.get('format') as string || 'webp') as OutputFormat;
-        const quality = parseInt(formData.get('quality') as string) || 80;
+        const file = formData.get('file');
+        const format = String(formData.get('format') || 'webp') as OutputFormat;
+        const quality = Number(formData.get('quality') || 80);
 
-        if (!file) {
-            return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+        if (!(file instanceof File) || !INPUT_TYPES.has(file.type)) {
+            return NextResponse.json({ error: '이미지 파일이 필요합니다.' }, { status: 400 });
+        }
+        if (!(format in MIME_TYPES) || !Number.isInteger(quality) || quality < 1 || quality > 100) {
+            return NextResponse.json({ error: '변환 형식 또는 품질 값이 올바르지 않습니다.' }, { status: 400 });
+        }
+        if (file.size > MAX_IMAGE_SIZE) {
+            return NextResponse.json({ error: '이미지 크기는 20MB 이하여야 합니다.' }, { status: 413 });
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer());
-
-        let sharpInstance = sharp(buffer);
-
-        // Get original metadata
-        const metadata = await sharpInstance.metadata();
-
-        let outputBuffer: Buffer;
-        let mimeType: string;
-
-        switch (format) {
-            case 'jpeg':
-                outputBuffer = await sharpInstance.jpeg({ quality }).toBuffer();
-                mimeType = 'image/jpeg';
-                break;
-            case 'png':
-                outputBuffer = await sharpInstance.png({
-                    compressionLevel: Math.round((100 - quality) / 10),
-                    quality
-                }).toBuffer();
-                mimeType = 'image/png';
-                break;
-            case 'gif':
-                outputBuffer = await sharpInstance.gif().toBuffer();
-                mimeType = 'image/gif';
-                break;
-            case 'tiff':
-                outputBuffer = await sharpInstance.tiff({ quality }).toBuffer();
-                mimeType = 'image/tiff';
-                break;
-            case 'avif':
-                outputBuffer = await sharpInstance.avif({ quality }).toBuffer();
-                mimeType = 'image/avif';
-                break;
-            case 'webp':
-            default:
-                outputBuffer = await sharpInstance.webp({ quality }).toBuffer();
-                mimeType = 'image/webp';
-                break;
-        }
-
-        return new NextResponse(outputBuffer, {
-            headers: {
-                'Content-Type': mimeType,
-                'Content-Length': outputBuffer.length.toString(),
-                'X-Original-Size': buffer.length.toString(),
-                'X-Converted-Size': outputBuffer.length.toString(),
-                'X-Original-Width': (metadata.width || 0).toString(),
-                'X-Original-Height': (metadata.height || 0).toString(),
-            },
+        const images = getCloudflareContext().env.IMAGES;
+        if (!images) throw new Error('Cloudflare Images binding is missing');
+        const metadata = await images.info(file.stream());
+        const transformed = await images.input(file.stream()).output({
+            format: MIME_TYPES[format],
+            quality: format === 'png' || format === 'gif' ? undefined : quality,
+            anim: format === 'gif',
         });
+        const result = transformed.response();
+        result.headers.set('Cache-Control', 'no-store');
+        result.headers.set('X-Content-Type-Options', 'nosniff');
+        result.headers.set('X-Original-Size', String(file.size));
+        result.headers.set('X-Original-Width', String('width' in metadata ? metadata.width : 0));
+        result.headers.set('X-Original-Height', String('height' in metadata ? metadata.height : 0));
+        return result;
     } catch (error) {
         console.error('Conversion error:', error);
-        return NextResponse.json({ error: 'Conversion failed' }, { status: 500 });
+        return NextResponse.json({ error: '이미지 변환에 실패했습니다. 지원되는 형식인지 확인해 주세요.' }, { status: 500 });
     }
 }
-
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};

@@ -564,6 +564,25 @@ export default function ImageResizePage() {
                         </div>
                     )}
                 </div>
+
+                <section className="max-w-5xl mx-auto mt-12 rounded-2xl border border-slate-200 bg-white p-6 md:p-8" aria-labelledby="image-resize-guide">
+                    <h2 id="image-resize-guide" className="text-xl font-bold text-slate-900 mb-4">이미지 크기 조절 방법</h2>
+                    <div className="grid gap-5 md:grid-cols-3 text-sm text-slate-600 leading-6">
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">픽셀·비율 선택</h3>
+                            <p>정확한 가로·세로 크기가 필요하면 픽셀을, 원본 크기를 일정하게 줄이거나 늘리려면 퍼센트를 선택하세요.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">자르기와 맞추기</h3>
+                            <p>자르기는 지정한 영역을 빈틈없이 채우고 가장자리를 잘라냅니다. 맞추기는 이미지 전체를 보존하며 남는 공간에 흰 여백을 넣습니다.</p>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">크게 확대할 때</h3>
+                            <p>원본보다 픽셀 수를 늘려도 새로운 디테일이 생기지는 않습니다. 결과를 미리 확인한 뒤 다운로드하세요.</p>
+                        </div>
+                    </div>
+                    <p className="mt-5 text-sm text-slate-500 leading-6">크기 조절은 브라우저에서 처리됩니다. 여러 장을 선택해 같은 설정으로 조절하고 ZIP으로 내려받을 수 있습니다.</p>
+                </section>
             </main>
             <Footer />
         </div>

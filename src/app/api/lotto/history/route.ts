@@ -7,7 +7,7 @@ const DHLOTTERY_URL =
 export async function GET() {
   try {
     const res = await fetch(DHLOTTERY_URL, {
-      next: { revalidate: 3600 },
+      cache: 'no-store',
       headers: { Accept: 'application/json' },
     });
 
@@ -44,7 +44,9 @@ export async function GET() {
       }))
       .sort((a, b) => b.ltEpsd - a.ltEpsd); // 최근 추첨(회차 큰 것) 먼저
 
-    return NextResponse.json({ list: draws });
+    return NextResponse.json({ list: draws }, {
+      headers: { 'Cache-Control': 'public, max-age=3600' },
+    });
   } catch (e) {
     console.error('Lotto history API error:', e);
     return NextResponse.json(

@@ -174,8 +174,10 @@ function parseFromMeta(html: string): ParseResult | null {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json().catch(() => ({}));
-    const rawInput: string = (body?.url || '').toString().trim();
+    const body: unknown = await request.json().catch(() => null);
+    const rawInput = body && typeof body === 'object' && 'url' in body && typeof body.url === 'string'
+      ? body.url.trim()
+      : '';
 
     if (!rawInput) {
       return NextResponse.json({ error: '링크를 입력해주세요.' }, { status: 400 });

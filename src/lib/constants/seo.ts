@@ -89,6 +89,41 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       'SNS 크기 조절',
     ],
   },
+  '/image-compress': {
+    title: '이미지 용량 줄이기',
+    description: 'JPG·PNG·WebP 이미지를 목표 용량에 맞춰 압축하고 전후 크기를 비교하세요. 여러 장 일괄 처리와 ZIP 다운로드를 지원합니다.',
+    keywords: ['이미지 용량 줄이기', '사진 압축', '이미지 압축', 'WebP 압축'],
+  },
+  '/image-crop': {
+    title: '이미지 자르기·회전',
+    description: '사진을 자유롭게 자르거나 1:1·16:9 비율로 자르고 90도 회전해 다운로드하세요.',
+    keywords: ['이미지 자르기', '사진 자르기', '이미지 회전', '사진 비율'],
+  },
+  '/image-metadata': {
+    title: '사진 위치정보·메타데이터 제거',
+    description: '사진에 포함된 EXIF·GPS 정보를 확인하고 제거한 새 이미지를 브라우저에서 다운로드하세요.',
+    keywords: ['사진 위치정보 제거', 'EXIF 제거', '사진 메타데이터 제거', 'GPS 제거'],
+  },
+  '/pdf-tools': {
+    title: 'PDF 합치기·페이지 추출',
+    description: '여러 PDF를 원하는 순서로 합치거나 페이지 번호를 지정해 필요한 페이지만 추출하세요.',
+    keywords: ['PDF 합치기', 'PDF 페이지 추출', 'PDF 병합', 'PDF 분리'],
+  },
+  '/csv-json': {
+    title: 'CSV ↔ JSON 변환',
+    description: 'CSV 표 데이터를 JSON 객체 배열로, JSON 배열을 CSV로 변환하고 결과를 미리 확인하세요.',
+    keywords: ['CSV JSON 변환', 'JSON CSV 변환', 'CSV 변환기', 'JSON 변환기'],
+  },
+  '/date-calculator': {
+    title: '날짜·영업일 계산기',
+    description: '두 날짜의 차이, 주말을 제외한 영업일, 기준일에서 며칠 전후의 날짜를 계산하세요.',
+    keywords: ['날짜 계산기', '영업일 계산기', '날짜 차이', '며칠 후 날짜'],
+  },
+  '/utm-builder': {
+    title: 'UTM 링크 생성기',
+    description: '유입 출처·매체·캠페인 값을 넣어 UTM 추적 링크를 만들고 QR 코드로 연결하세요.',
+    keywords: ['UTM 링크 생성기', 'UTM 파라미터', '캠페인 URL', 'UTM URL'],
+  },
   '/json-formatter': {
     title: 'JSON 포맷터·검증기',
     description: 'JSON 데이터를 검증하고 보기 좋게 정렬합니다. 문법 오류 위치 표시, 복사 기능 지원.',
@@ -143,6 +178,31 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       'xiaohongshu downloader',
       'RED 다운로드',
     ],
+  },
+  '/word-counter': {
+    title: '글자 수·단어 수 카운터',
+    description: '텍스트를 입력하면 실시간으로 글자 수, 단어 수, 줄 수를 확인할 수 있습니다. 블로그·소셜 글 작성에 활용하세요.',
+    keywords: ['글자 수', '단어 수', '글자 수 카운터', '단어 수 카운터', '텍스트 카운터'],
+  },
+  '/url-encoder': {
+    title: 'URL 인코더·디코더',
+    description: '텍스트를 percent-encoding으로 인코딩·디코딩합니다. API·쿼리스트링 작업에 유용합니다.',
+    keywords: ['URL 인코더', 'URL 디코더', 'percent encoding', 'URL 인코딩'],
+  },
+  '/jwt-decoder': {
+    title: 'JWT 디코더',
+    description: 'JWT 토큰을 붙여넣으면 Header·Payload를 읽기 쉽게 보여줍니다. 검증 없이 디코딩만 지원합니다.',
+    keywords: ['JWT 디코더', 'JWT 파싱', 'JWT payload', 'JWT 디코딩'],
+  },
+  '/uuid-generator': {
+    title: 'UUID 생성기',
+    description: 'UUID v4를 생성하고 클립보드로 복사할 수 있습니다. DB ID, 테스트 데이터용.',
+    keywords: ['UUID 생성', 'UUID 생성기', 'UUID v4', '고유 ID'],
+  },
+  '/vat-calculator': {
+    title: '부가세 계산기',
+    description: '공급가액 또는 세금 포함 금액을 입력하면 부가세·합계를 계산합니다. 기본 10% 적용.',
+    keywords: ['부가세 계산기', '부가세 계산', 'VAT 계산', '공급가액', '세금 계산'],
   },
 };
 
